@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.depobrp.model.master.Consignee;
 import com.depobrp.model.master.MLO;
 import com.depobrp.model.master.Vessel;
-import com.depobrp.model.operation.DeliveryOrderIN;
-import com.depobrp.model.operation.FreightContainer;
+import com.depobrp.model.order.DeliveryOrderIN;
+import com.depobrp.model.order.FreightContainer;
 import com.depobrp.service.common.ObjectService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
