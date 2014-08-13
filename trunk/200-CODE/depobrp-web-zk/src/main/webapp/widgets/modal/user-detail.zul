@@ -1,0 +1,59 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+<window id="userDetailDialog"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init(UserDetailVM)"
+	form="@id('fx') 
+        	@load(vm.currentUser) 
+        	@save(vm.currentUser, before='saveUser')"
+	title="User Detail"
+	border="normal"
+	width="400px"
+	closable="true"
+	maximizable="true">
+	
+	<vlayout>
+		<grid>
+			<columns>
+				<column width="100px"/>
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label value="Username" />
+					<textbox value="@bind(fx.username)" />
+				</row>
+				<row>
+					<label value="Password" />
+					<textbox value="@bind(fx.password)" type="password"/>
+				</row>
+				<row>
+					<label value="Supervisor" />
+					<!-- <textbox value="@bind(vm.supervisorUsername)" /> -->
+					<combobox id="autocomplete_recipients"
+						onChanging="@command('autocompleteSupervisor', event=event)"
+						autodrop="true" width="80%" 
+						value="@bind(vm.supervisorUsername)" 
+						selectedItem="@bind(vm.supervisorUsername)">
+					</combobox>
+				</row>
+				<row>
+					<label value="Role" />
+					<listbox model="@load(vm.allRoles)" selectedItem="@bind(vm.selectedRole)" mold="select">
+	                    <template name="model">
+	                        <listitem  label="@load(each.name)" />
+	                    </template>
+	                </listbox>
+				</row>
+			</rows>
+		
+		</grid>
+		<hbox align="end" width="100%">
+			<button label="Save" onClick="@command('saveUser')"/>
+		</hbox>
+	</vlayout>
+
+</window>
+
+</zk>

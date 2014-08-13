@@ -1,0 +1,60 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+
+<window id="sendEmailDialog"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init(SendEmailVM)"
+	title="Send Email"
+	border="normal"
+	width="560px"
+	closable="true"
+	maximizable="true">
+	
+	<script type="text/javascript" src="js/jquery.tagsinput.js"></script>
+	<script defer="true">
+	zk.afterMount(function(){ 
+	       jq(".cc_recipients").tagsInput({width:'80%', height: '25px', defaultText: ''});
+	   });
+	</script>
+	<vlayout>
+		
+		<grid>
+			<columns>
+				<column width="60px"></column>
+				<column></column>
+			</columns>
+			<rows>
+				<row>
+					<label value="to" />
+					<combobox id="autocomplete_recipients"
+						onChanging="@command('autocompleteRecipient', event=event)"
+						autodrop="true" width="80%" value="@bind(vm.to)" height="25px">
+					</combobox>
+				</row>
+				<row>
+					<label value="cc" />
+					<textbox sclass="cc_recipients" width="80%"/>
+				</row>
+				<row>
+					<label value="subject" />
+					<textbox value="@bind(vm.subject)" 
+						
+						width="80%" height="25px"/>
+				</row>
+				<row>
+					<label value="message" />
+					
+					<ckeditor id="messageText" value="@bind(vm.messageText)" 
+						customConfigurationsPath="/js/ckeditor-config.js"/>
+					
+				</row>
+			</rows>
+		</grid>
+	    
+		<button label="Send Email" onClick="@command('sendEmail')"/>
+		
+	</vlayout>
+
+</window>
+
+</zk>

@@ -1,0 +1,14 @@
+<zk>
+
+<window 
+	title="Oops, something wrong : ${requestScope['javax.servlet.error.status_code']}"
+	width="400px" border="normal" mode="modal" closable="true">
+    <vbox>
+		<label>Please try again to continue</label>
+        <hbox style="margin-left:auto; margin-right:auto">
+            <button label="Try again" onClick="Executions.sendRedirect(null)"/>
+        </hbox>
+    </vbox>
+</window>
+
+</zk>

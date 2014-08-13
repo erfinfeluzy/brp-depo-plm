@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+    name="belajar-report"
+    pageWidth="595" pageHeight="842"
+    columnWidth="555"
+    leftMargin="20" rightMargin="20"
+    topMargin="20" bottomMargin="20"
+    uuid="cb00f46c-f21d-4848-b364-9518262cc08a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select U.USERNAME, P.USERNAME as SUPERVISOR
+from TBL_MS_USER U, TBL_MS_USER P
+where u.SUPERVISOR_ID = p.USER_ID]]>
+	</queryString>
+	<field name="USERNAME" class="java.lang.String"/>
+	<field name="SUPERVISOR" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="57" y="28" width="122" height="20" uuid="bb286810-62f4-4abc-93d9-16cc0a568c0f"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[ALL USER REPORT]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="91" height="48" uuid="d1ca22cf-f740-4306-bb26-1ec180a25c18"/>
+				<imageExpression><![CDATA["/Users/visitek/Downloads/depobrp-logo.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="20" width="555" height="1" uuid="c33cb7db-6c21-4499-8247-38db1ac64766"/>
+			</line>
+			<staticText>
+				<reportElement x="17" y="2" width="100" height="20" uuid="4eb377c0-9c0e-4937-a041-89762a15984e"/>
+				<text><![CDATA[USERNAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="2" width="100" height="20" uuid="aedc7be9-c0a6-43da-9e79-b7a5d43c09e5"/>
+				<text><![CDATA[SUPERVISOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="244" height="20" uuid="096b9d63-e7f8-41c6-996f-e2bb2d0f8eb9"/>
+				<textFieldExpression><![CDATA[$F{USERNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="277" y="0" width="266" height="20" uuid="a3683f51-e303-45bd-a931-1d35909076a8"/>
+				<textFieldExpression><![CDATA[$F{SUPERVISOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="a5ecd162-a15c-4c88-85f4-c37d9afb51b0"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="410" y="0" width="80" height="20" uuid="f0eb9792-b049-4c94-98be-bbf387a38e95"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="490" y="0" width="40" height="20" uuid="c4e96db0-bd2d-4f04-a2ee-2a1cf329d73b"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

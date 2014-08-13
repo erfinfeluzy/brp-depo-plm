@@ -1,0 +1,44 @@
+<?page id="BRPSecurePage" title="BRP System Smart Depo"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="shortcut icon" type="image/x-icon" href="/imgs/favicon.ico"?>
+<?link rel="icon" type="image/x-icon" href="/imgs/favicon.ico"?>
+<?init class="com.depobrp.web.zk.common.SessionInitializer" name="sessionInitializer"?>
+
+<zk>
+
+	<borderlayout hflex="1" vflex="1" apply="com.depobrp.web.zk.common.BookmarkChangeController" >
+		
+		<north height="25px" border="none" collapsible="true" minsize="300">
+			<include src="/layout/header.zul"/>
+		</north>
+		
+		<east width="200px" border="none" collapsible="true" splittable="true" title="Activity" open="false">
+			<include src="/layout/sidebar.zul"/>
+		</east>
+		
+		<west width="200px" border="none" collapsible="true" splittable="true" title="Menu">
+			<include src="/layout/east-sidebar.zul"/>
+		</west>
+		
+		<center id="mainContent" autoscroll="true" border="none" self="@insert(content)">
+			<!-- the main content will be insert to here -->
+		</center>
+		
+		<south>
+			<hbox><div class="sound" visible="false" />
+			<grid>
+				<columns>
+					<column label="BRP Copyright @ 2014"></column>
+				</columns>
+			</grid>
+			</hbox>
+		</south>
+		
+	</borderlayout>
+	
+	<script type="text/javascript">
+		function playSound(){
+			$("div.sound").html('&lt;audio autoplay="autoplay"&gt;&lt;source src="imgs/notif.mp3" type="audio/mpeg" /&gt;&lt;source src="imgs/notif.ogg" type="audio/ogg" /&gt;&lt;embed hidden="true" autostart="true" loop="false" src="imgs/notif.mp3" /&gt;&lt;/audio&gt;');	
+		}
+	</script>
+</zk>

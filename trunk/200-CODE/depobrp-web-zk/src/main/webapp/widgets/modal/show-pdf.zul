@@ -1,0 +1,19 @@
+
+<zk>
+<window id="showPdfDialog"
+	apply="org.zkoss.bind.BindComposer"
+	title="Show PDF"
+	border="normal"
+	width="600px"
+	height="500px"
+	sizable="true"
+	closable="true"
+	maximizable="true">
+	
+	<iframe id="pdfIFrame" width="100%" height="100%"
+		src="/report/user.pdf">
+	
+	</iframe>
+	
+</window>
+</zk>

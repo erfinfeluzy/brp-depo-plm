@@ -1,0 +1,21 @@
+<zk>
+    <div height="100%" width="100%">
+    	<borderlayout>
+    		<center border="none" autoscroll="true" >
+    			<tabbox mold="accordion" 
+		        	height="100%" 
+		        	apply="com.depobrp.web.zk.common.EastSidebarAjaxbasedController" id="eastSideBarTabbox">
+		            <tabs/>
+		            <tabpanels/>
+		        </tabbox>
+    		</center>
+    		
+    		<south height="170px" border="none" 
+        		collapsible="true" splittable="true" autoscroll="true" title="Calendar">
+    			<calendar id="cal" width="98%" />
+    		</south>
+    	
+    	</borderlayout>
+
+    </div>
+</zk>

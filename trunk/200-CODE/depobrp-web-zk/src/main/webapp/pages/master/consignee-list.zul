@@ -1,0 +1,52 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" border="none"
+		width="100%" viewModel="@id('vm') @init(ConsigneeListVM)" hflex="1"
+		vflex="1" contentStyle="overflow:auto">
+
+		<grid height="100%" model="@load(vm.consigneeList)"
+			emptyMessage="Nothing in Inbox.">
+
+			<auxhead>
+				<auxheader label="Consignee List" colspan="7" />
+			</auxhead>
+
+			<auxhead>
+				<auxheader>
+					<image onClick="@command('showConsigneeDetail')" 
+						tooltiptext="Create New Consignee" src="/imgs/add.png" />
+				</auxheader>
+				<auxheader colspan="6"></auxheader>
+			</auxhead>
+
+			<columns menupopup="auto">
+				<column label="Action" width="50px" />
+				<column label="Name" sort="auto(name)" />
+				<column label="Email" sort="auto(email)" />
+				<column label="Address" sort="auto(address)" />
+				<column label="Phone" sort="auto(phone1)" />
+				<column label="CreatedBy" sort="auto(createdBy)" />
+				<column label="CreatedDate" sort="auto(createdDate)" />
+			</columns>
+
+			<template name="model">
+				<row>
+					<hbox>
+						<image src="/imgs/edit.png" 
+							onClick="@command('showConsigneeDetail', selectedConsignee = each)"/>
+						<image src="/imgs/delete.png" 
+							onClick="@command('deleteConsignee', selectedConsignee = each)"/>
+					</hbox>
+					<label value="@bind(each.name)" />
+					<label value="@bind(each.email)" />
+					<label value="@bind(each.address)" />
+					<label value="@bind(each.phone1)" />
+					<label value="@bind(each.createdBy)" />
+					<label value="@bind(each.createdDate)" />
+
+				</row>
+			</template>
+		</grid>
+
+	</window>
+</zk>

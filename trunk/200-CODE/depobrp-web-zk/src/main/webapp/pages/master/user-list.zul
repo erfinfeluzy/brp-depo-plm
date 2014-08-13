@@ -1,0 +1,67 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" border="none" width="100%"
+        viewModel="@id('vm') @init(UserListVM)"
+        hflex="1" vflex="1" contentStyle="overflow:auto">
+	
+		<grid height="99%" 
+				model="@load(vm.userList)"
+				emptyMessage="No User Available">
+			
+			<auxhead>
+				<auxheader label="User List" colspan="4"></auxheader>
+			</auxhead>
+
+			<auxhead>
+				<auxheader>
+					<image onClick="@global-command('showUserDetail')"
+							tooltiptext="Create New User" 
+							src="/imgs/add.png"/>
+				</auxheader>
+				<auxheader>
+					<hlayout width="100%">
+					<textbox tooltiptext="search"/>
+					<image src="/imgs/filter.png" tooltiptext="Search"/>
+					</hlayout>
+				</auxheader>
+				<auxheader colspan="2"/>
+			</auxhead>
+			
+			<columns menupopup="auto">
+				<column width="50px" image="/imgs/edit.png"/>
+				<column label="username" sort="auto(username)" width="200px"/>
+				<column label="password" width="200px"/>
+				<column label="role" />
+				
+			</columns>
+			
+			<template name="model">
+			
+				<row context="viewPopup">
+					<hbox>
+						<image src="/imgs/edit.png" 
+							onClick="@global-command('showUserDetail', selectedUser = each)"
+							tooltiptext="Show User Detail"/>
+						<image src="/imgs/delete.png" 
+							onClick="@command('deleteUser', selectedUser = each)"/>
+					</hbox>
+					<label value="@bind(each.username)" width="99%"/>
+					<label value="@bind(each.password)" width="99%"/>
+					<label value="@bind(each.role.name)" />
+					
+				</row>
+			
+			</template>
+		</grid>
+		
+		<menupopup id="viewPopup"
+				onOpen="@command('openMenuPopup', referenceValue=event.getReference(), open=event.open)">
+        	<menuitem label="Edit" image="/imgs/edit.png" onClick="@command('editUserDetail')" />
+        	<menuitem label="Delete" image="/imgs/delete.png"/>
+	        <menuseparator />
+	       	<menuitem label="Send Message" />
+	        <menuseparator />
+    	</menupopup>	
+
+	</window>
+</zk>

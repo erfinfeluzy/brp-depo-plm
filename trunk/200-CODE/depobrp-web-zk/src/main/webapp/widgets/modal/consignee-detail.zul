@@ -1,0 +1,62 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+<window id="consigneeDetailDialog"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init(ConsigneeDetailVM)"
+	form="@id('fx') 
+        	@load(vm.consignee) 
+        	@save(vm.consignee, before='saveConsignee')
+        	@validator('com.depobrp.web.zk.vm.master.MLOValidator')"
+    validationMessages="@id('vmsgs')"
+	title="Consignee Detail"
+	border="normal"
+	width="400px"
+	closable="true"
+	maximizable="true">
+	
+	<vlayout>
+		<grid>
+			<columns>
+				<column width="100px"/>
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label value="Name" />
+					<textbox value="@bind(fx.name)" width="150px"/>
+					<label class="error" value="@load(vmsgs['name'])" />
+				</row>
+				<row>
+					<label value="Email" />
+					<textbox value="@bind(fx.email)" width="150px"/>
+					<label class="error" value="@load(vmsgs['email'])" />
+				</row>
+				<row>
+					<label value="Address" />
+					<textbox value="@bind(fx.address)" multiline="true" width="150px" height="50px"/>
+					<label class="error" value="@load(vmsgs['address'])" />
+				</row>
+				<row>
+					<label value="Phone 1" />
+					<textbox value="@bind(fx.phone1)" width="150px"/>
+					<label class="error" value="@load(vmsgs['phone1'])" />
+				</row>
+				<row>
+					<label value="Phone 2" />
+					<textbox value="@bind(fx.phone2)" width="150px"/>
+					<label class="error" value="@load(vmsgs['phone2'])" />
+				</row>
+				
+			</rows>
+		
+		</grid>
+		
+		<button label="Save" onClick="@command('saveConsignee')"/>
+	
+	</vlayout>
+
+</window>
+
+</zk>

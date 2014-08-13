@@ -1,0 +1,177 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+
+	<window apply="org.zkoss.bind.BindComposer" border="none" height="99%"
+		width="100%" viewModel="@id('vm') @init(DeliveryOrderInVM)" 
+		hflex="1" vflex="1" contentStyle="overflow:auto">
+		
+		<style>
+			div.z-listbox-body .z-listcell { 
+				padding: 1px;
+			}
+		</style>
+		
+		<grid>
+			
+			<auxhead>
+				<auxheader label="Delivery Order IN" colspan="4"/>
+			</auxhead>
+
+			<columns>
+				<column width="100px" valign="top" align="right" />
+				<column valign="top"></column>
+				<column width="100px" valign="top" align="left" />
+				<column valign="top"></column>
+			</columns>
+			
+			<rows>
+			
+				<row>
+					<label value="No DO" />
+					<textbox value="@bind(vm.doIN.doNumber)" />
+					
+					
+					<cell rowspan="7" colspan="2" style="background-color:#ffffff">
+					<vbox>
+						<label value="Add Container" />
+						<hbox>
+							<label value="Num"/>
+							<textbox value="@bind(vm.currentContainer.containerNum)" 
+								constraint="no empty"/>
+							
+							<label value="CD"/>
+							<intbox width="25px" 
+								constraint="no negative,no empty" 
+								maxlength="1"
+								value="@bind(vm.currentContainer.checkDigit)"/>
+							
+						</hbox>
+						<hbox align="center" hflex="1">
+							<label value="Size"/>
+							<combobox width="100px"
+								readonly="true" 
+								model="@load(vm.containerSizeList)" 
+								selectedItem="@bind(vm.currentContainer.size)">
+								<template name="model">
+									<comboitem label="@load(each.description)"/>
+								</template>
+							</combobox>
+							
+							
+							<label value="Type" />
+							<combobox width="100px" readonly="true"
+								model="@load(vm.containerTypeList)" 
+								selectedItem="@bind(vm.currentContainer.type)">
+								<template name="model">
+									<comboitem label="@load(each)"/>
+								</template>
+							</combobox>
+							
+							<button tooltiptext="Add container" onClick="@command('addContainer')" image="/imgs/add.png"/>
+						</hbox>
+						<label value="@load(vm.addContainerErrorMessage)"/>
+						<listbox model="@bind(vm.containerList)" vflex="1" height="200px" width="200px" hflex="1">
+							<listhead>
+								<listheader label="container"/>
+								<listheader image="/imgs/delete.png"  width="50px"/>
+							</listhead>
+							<template name="model">
+								<listitem width="150px">
+									<listcell >
+										<label value="@load(each.containerNum)"/>
+										<label value="-"/>
+										<label value="@load(each.checkDigit)"/>
+										<label value=","/>
+										<label value="@load(each.size.description)"/>
+										<label value="-"/>
+										<label value="@load(each.type)"/>
+									</listcell>
+									<listcell>
+										<image src="/imgs/cross.png" onClick="@command('removeContainer', selected = each)"/>
+									</listcell>
+								</listitem>
+							</template>
+						</listbox>
+					</vbox>
+					</cell>
+				</row>
+				
+				<row>
+					<label value="Owner" />
+					<combobox readonly="true" width="130px" 
+						model="@load(vm.mloList)" 
+						selectedItem="@bind(vm.doIN.owner)">
+						<template name="model">
+							<comboitem label="@load(each.name)"/>
+						</template>
+					</combobox>
+
+				</row>
+				
+				<row>
+					<label value="Consignee" />
+					<combobox readonly="true" width="130px" 
+						model="@load(vm.consigneeList)" 
+						selectedItem="@bind(vm.doIN.consignee)">
+						<template name="model">
+							<comboitem label="@load(each.name)"/>
+						</template>
+					</combobox>
+				</row>
+				
+				<row>
+					<label value="DO Date"/>
+					<datebox width="130px" value="@bind(vm.doIN.deliveryDate)"/>
+				</row>
+				
+				<row>
+					<label value="Ex-Vessel" />
+					<hbox>
+						<combobox readonly="true" width="130px" 
+							model="@load(vm.vesselList)" 
+							selectedItem="@bind(vm.doIN.exVessel)">
+							<template name="model">
+								<comboitem label="@load(each.name)"/>
+							</template>
+						</combobox>
+						
+						<label value="Voyage. No" />
+						<textbox value="@bind(vm.doIN.exVesselVoyageNo)"/>
+					</hbox>
+				</row>
+				
+				<row>
+					<label value="Ex-Port" />
+					<combobox width="130px">
+						<comboitem label="Port PLM" />
+					</combobox>
+				</row>
+				
+				<row>
+					<label value="Note IN"  />
+					<textbox height="60px" width="80%" multiline="true" 
+						value="@bind(vm.doIN.noteIn)"/>
+				</row>
+				
+				<row>
+					
+				</row>
+				
+				<row>
+					<hbox/>
+					<hbox>
+						<button label="Save" width="80px" image="/imgs/plus.png" onClick="@command('saveDeliveryOrderIN')"/>
+						<separator width="10px"/>
+						<button label="Reset" width="80px" image="/imgs/cross.png" onClick="@global-command('resetDeliveryOrderINPage')"/>
+					</hbox>
+				</row>
+				
+				
+				
+			</rows>
+			
+		</grid>
+
+	</window>
+
+</zk>

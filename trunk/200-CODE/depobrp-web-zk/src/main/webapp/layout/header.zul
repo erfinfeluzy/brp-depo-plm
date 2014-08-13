@@ -1,0 +1,50 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+    <style>.z-menubar-hor, .z-menubar-ver { border: 1px solid #D8D8D8; } 
+    .content {overflow-x: hidden;overflow-y: scroll;}</style>
+ 
+ 	<zscript>
+ 	<![CDATA[
+ 	         
+        void logout(){
+        	session.invalidate();
+        	execution.sendRedirect("/j_spring_security_logout");
+        }
+    ]]>
+    </zscript>
+
+            <menubar id="menubar" width="100%" height="100%" 
+            	apply="org.zkoss.bind.BindComposer"
+            	viewModel="@id('vm') @init(TopMenuController)">
+                <menu label="File">
+                    <menupopup>
+                    	<menuitem label="Hi ${sessionScope.USER_CONTEXT.username}"/>
+                        <menu label="New" image="/widgets/menu/drop-down_menu/img/file_new.png">
+                            <menupopup>
+                                <menuitem label="User" onClick="@command('newUserDetail')"/>
+                                <menuitem label="Report" onClick="@command('showPdf')"/>
+                            </menupopup>
+                        </menu>
+                        <menuseparator></menuseparator>
+                        <menuitem label="Exit" image="/widgets/menu/drop-down_menu/img/file_exit.png" 
+                          onClick="logout()"/>
+                    </menupopup>
+                </menu>
+                <menu label="Administrator">
+                    <menupopup>
+                        <menuitem label="Role Configuration" onClick="@command('roleConfiguration')" />
+                        <menuitem label="Send Email" onClick="@command('sendEmail')" />
+                    </menupopup>
+                </menu>
+                <menu label="Help">
+                    <menupopup>
+                        <menuitem label="Issue tracker" target="_zkdemo" href="http://tracker.zkoss.org" image="/widgets/menu/drop-down_menu/img/bug.png" />
+                        <menu label="About">
+                            <menupopup>
+                                <menuitem label="About Potix" target="_zkdemo" href="http://www.zkoss.org/support/about" onClick="alert(self.label)" />
+                            </menupopup>
+                        </menu>
+                    </menupopup>
+                </menu>
+            </menubar>
+</zk>
