@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+
+	<language-config>
+        <addon-uri>/WEB-INF/zk-addon/ckez-bind-addon.xml</addon-uri>
+    </language-config>
+
+	<library-property>
+	    <name>org.zkoss.theme.preferred</name>
+	    <value>sapphire</value> <!-- or silvertail, atlantic -->
+	</library-property>
+
+	<session-config>
+		<session-timeout>1800</session-timeout>
+		<timer-keep-alive>false</timer-keep-alive>
+		<max-desktops-per-session>15</max-desktops-per-session>
+		<max-requests-per-session>5</max-requests-per-session>
+		<max-pushes-per-session>3</max-pushes-per-session>
+	</session-config>
+	
+	<error-page>
+	    <exception-type>java.lang.Throwable</exception-type>    
+	    <location>/WEB-INF/handler/error.zul</location>    
+	</error-page>
+
+</zk>

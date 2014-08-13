@@ -1,0 +1,52 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+
+	<div height="100%" width="100%" 
+		id="organizationTree" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init(WestSidebarAjaxbasedController)">
+
+		<borderlayout>
+		
+		<center border="none" autoscroll="true">
+		
+			<div>
+				<tree id="tree" hflex="1" model="@load(vm.model)" height="100%" width="100%" sizedByContent="true">
+					<treecols>
+						<treecol hflex="1"/>
+					</treecols>
+					<template name="model">
+						<treeitem>
+							<treerow>
+								<treecell label="${each.username}" image="/imgs/online.png" if="${each.login==true}" 
+									onClick="@command('showUserDetail', selectedUser = each)"/>
+								<treecell label="${each.username}" image="/imgs/offline.png" if="${each.login==false}" 
+									onClick="@command('showUserDetail', selectedUser = each)"/>
+							</treerow>
+						</treeitem>
+					</template>
+				</tree>
+			</div>
+		</center>
+
+		<south title="Stream Activity" height="400px"
+			collapsible="true" splittable="true" 
+			border="none" autoscroll="true">
+			
+			<div apply="com.depobrp.web.zk.common.UserActivityComposer">
+				<timer id="userActivityLookupTimer" 
+					delay="3600000" 
+					repeats="true"/>
+				<listbox id="activityList" style="overflow:auto">
+					<listhead>
+		                <listheader />
+		            </listhead>
+				</listbox>
+			</div>
+		
+		</south>
+		
+		</borderlayout>
+
+	</div>
+    
+</zk>

@@ -1,0 +1,4 @@
+<vbox vflex="1" hflex="1" align="center" pack="center" spacing="20px" >
+	<image src="/imgs/depobrp-logo.png" />
+	<label value="Bahari Raharja Permai Smart Depo" sclass="head1"/>
+</vbox>

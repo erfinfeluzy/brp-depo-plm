@@ -1,0 +1,93 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" border="none"
+		width="100%" viewModel="@id('vm') @init(MLOListVM)" hflex="1"
+		vflex="1" contentStyle="overflow:auto">
+
+		<grid height="99%" model="@load(vm.mloList)"
+			emptyMessage="Nothing in Inbox.">
+
+			<auxhead>
+				<auxheader label="MLO List" colspan="7" />
+			</auxhead>
+
+			<auxhead>
+				<auxheader>
+					<image onClick="@command('editMloDetail')"
+						tooltiptext="Create New MLO" src="/imgs/add.png" />
+				</auxheader>
+				<auxheader>
+					<hbox>
+						<textbox width="95%"
+							value="@bind(vm.filterMlo.name)"
+							onChange="@command('changeFilter')" />
+						<image src="/imgs/filter.png"
+							tooltiptext="search" />
+					</hbox>
+				</auxheader>
+				<auxheader>
+					<hbox>
+						<textbox width="95%"
+							value="@bind(vm.filterMlo.email)"
+							onChange="@command('changeFilter')" tooltiptext="search" />
+						<image src="/imgs/filter.png"
+							tooltiptext="search" />
+					</hbox>
+				</auxheader>
+				<auxheader colspan="4"></auxheader>
+			</auxhead>
+
+
+			<columns menupopup="auto">
+				<column label="Action" width="50px" />
+				<column label="Name" sort="auto(name)" />
+				<column label="Email" sort="auto(email)" />
+				<column label="Address" sort="auto(address)" />
+				<column label="Phone" sort="auto(phone1)" />
+				<column label="CreatedBy" sort="auto(createdBy)" />
+				<column label="CreatedDate" sort="auto(createdDate)" />
+
+			</columns>
+			<template name="model">
+				<row context="viewPopup">
+					<hbox>
+						<image src="/imgs/edit.png"
+							onClick="@command('editMlo', selectedMlo = each)"
+							tooltiptext="Edit MLO" />
+						<image src="/imgs/delete.png"
+							onClick="@command('deleteMlo', selectedMlo = each)"
+							tooltiptext="Edit MLO" />
+					</hbox>
+					<textbox inplace="true" value="@bind(each.name)"
+						width="99%" />
+					<textbox inplace="true" value="@bind(each.email)"
+						width="99%" />
+					<textbox inplace="true" value="@bind(each.address)"
+						width="99%" />
+					<textbox inplace="true" value="@bind(each.phone1)"
+						width="99%" />
+					<label value="@bind(each.createdBy)" />
+					<datebox inplace="true"
+						value="@bind(each.createdDate)" />
+
+				</row>
+
+			</template>
+		</grid>
+
+
+		<menupopup id="viewPopup"
+			onOpen="@command('openMessagePopup', 
+        		referenceValue=event.getReference(), 
+        		open=event.open)">
+
+			<menuitem label="Message" onClick="@command('sendMessage')" />
+			<menuseparator />
+			<menuitem label="Edit MLO"
+				onClick="@command('editMloDetail')" />
+			<menuitem label="Mail to" />
+			<menuseparator />
+		</menupopup>
+
+	</window>
+</zk>

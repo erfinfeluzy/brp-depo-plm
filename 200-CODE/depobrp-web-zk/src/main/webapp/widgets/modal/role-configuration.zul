@@ -1,0 +1,72 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+<window id="roleConfigurationDialog"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init(RoleConfigurationVM)"
+	title="Module Configuration"
+	border="normal"
+	width="560px"
+	closable="true"
+	maximizable="true"
+	onClose="@command('closeDialog')">
+	
+	
+	<vlayout>
+		
+		<checkbox id="createNewRole_chk" 
+		    	label="Create New Role"
+	            checked="@bind(vm.createNewRole)" 
+	            onCheck="newRoleName.setVisible(self.checked); existingRoleList.setVisible(! self.checked)"/>
+	
+		<hlayout>
+			
+			<listbox id="existingRoleList" model="@load(vm.allRole)" selectedItem="@bind(vm.selectedRole)" mold="select" onSelect="@command('selectRole')">
+		         <template name="model">
+		             <listitem  label="@load(each.name)" />
+		         </template>
+		    </listbox>
+       
+		    <textbox id="newRoleName" value="@bind(vm.newRoleName)" visible="false"/>
+		    
+	    </hlayout>
+	    
+		<label value="Drag to right to select Module"/>
+		
+		<hlayout>
+			<vlayout>
+				<label value="available item"/>
+				<listbox width="250px" height="250px"
+					model="@bind(vm.availableModule)"
+					droppable="true"
+					onDrop="@command('removeModule', module=event.dragged.attributes.item)">
+					<template name="model">
+						<listitem draggable="true" droppable="true"
+							label="@load(each.name)"
+							attributes.item="@load(each)"
+							onDrop="@command('removeModule', module=event.dragged.attributes.item)"/>
+					</template>
+				</listbox>
+			</vlayout>
+			<vbox vflex="1" pack="middle" width="20px">
+			
+			</vbox>
+			<vlayout>
+				<label value="selected item"/>
+				<listbox width="250px" height="250px" 
+					model="@bind(vm.selectedModule)"
+					droppable="true"
+					onDrop="@command('selectModule', module=event.dragged.attributes.item)">
+					<template name="model">
+						<listitem draggable="true" droppable="true"
+							label="@load(each.name)" attributes.item="@load(each)"
+							onDrop="@command('selectModule', module=event.dragged.attributes.item)"/>
+					</template>
+				</listbox>
+			</vlayout>
+		</hlayout>
+		<button label="Save Module" onClick="@command('saveRoleModule')"/>
+	</vlayout>
+
+</window>
+
+</zk>

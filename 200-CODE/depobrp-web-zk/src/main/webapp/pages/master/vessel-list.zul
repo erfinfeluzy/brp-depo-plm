@@ -1,0 +1,82 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" border="none"
+		width="100%" viewModel="@id('vm') @init(VesselListVM)" hflex="1"
+		vflex="1" contentStyle="overflow:auto">
+
+		<grid height="99%" model="@load(vm.vesselList)"
+			emptyMessage="Nothing in Inbox.">
+
+			<auxhead>
+				<auxheader label="Vessel List" colspan="7" />
+			</auxhead>
+
+			<auxhead>
+				<auxheader>
+					<image onClick="@command('showVesselDetail')"
+						tooltiptext="Create New Vessel" src="/imgs/add.png" />
+				</auxheader>
+				<auxheader>
+					<hbox>
+						<textbox width="95%"
+							value="@bind(vm.filterVessel.name)"
+							onChange="@command('changeFilter')" />
+						<image src="/imgs/filter.png"
+							tooltiptext="search" />
+					</hbox>
+				</auxheader>
+				<auxheader>
+					<hbox>
+						<textbox width="95%"
+							value="@bind(vm.filterVessel.email)"
+							onChange="@command('changeFilter')" tooltiptext="search" />
+						<image src="/imgs/filter.png"
+							tooltiptext="search" />
+					</hbox>
+				</auxheader>
+				<auxheader colspan="4"></auxheader>
+			</auxhead>
+
+
+			<columns menupopup="auto">
+				<column label="Action" width="50px" />
+				<column label="Name" sort="auto(name)" />
+				<column label="Email" sort="auto(email)" />
+				<column label="Address" sort="auto(address)" />
+				<column label="Phone" sort="auto(phone1)" />
+				<column label="CreatedBy" sort="auto(createdBy)" />
+				<column label="CreatedDate" sort="auto(createdDate)" />
+			</columns>
+
+			<template name="model">
+				<row context="viewPopup">
+					<hbox>
+						<image src="/imgs/edit.png"
+							onClick="@command('showVesselDetail', selectedVessel = each)"
+							tooltiptext="Edit Vessel" />
+						<image src="/imgs/delete.png"
+							onClick="@command('deleteVessel', selectedVessel = each)"
+							tooltiptext="Delete Vessel" />
+					</hbox>
+					<label value="@bind(each.name)" />
+					<label value="@bind(each.email)" />
+					<label value="@bind(each.address)" />
+					<label value="@bind(each.phone1)" />
+					<label value="@bind(each.createdBy)" />
+					<label value="@bind(each.createdDate)" />
+
+				</row>
+
+			</template>
+		</grid>
+
+
+		<menupopup id="viewPopup"
+			onOpen="@command('openRightClickPopup', 
+   		referenceValue=event.getReference(), 
+   		open=event.open)">
+			<menuitem label="Send Message" />
+		</menupopup>
+
+	</window>
+</zk>

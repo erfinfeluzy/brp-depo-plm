@@ -1,0 +1,37 @@
+<?page id="BRPLogin" title="Welcome to BRP System"?>
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+
+	<borderlayout>
+	
+	<center style="background: url(imgs/wallpaper.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+    
+    <window border="none" width="300px" position="center,center" mode="overlapped" 
+    	contentStyle="background-color: rgba(255,255,255,0.8); padding: 20px 20px 20px 20px"> 
+	    
+	    <vbox align="center">
+	    <label if="${not empty param.fail}" style="color:red">
+	    	Invalid Login, Please try again. 
+	    </label>
+	    </vbox>
+	
+		<space/>
+
+    	<h:form id="f" name="f" action="j_spring_security_check" method="POST" xmlns:h="native">
+	    
+	    	<vbox width="100%" align="center">
+	    		<image src="/imgs/depobrp-logo.png"/>
+	    		<textbox id="u" name="j_username" placeholder="username" height="30px" width="200px" />
+	    		<textbox id="p" type="password" name="j_password" placeholder="password" height="30px" width="200px" />
+	    		<checkbox id="r" name="j_spring_security_remember_me" label="remind me"/>
+	    		<h:input type="submit" value="Login" class="square blue" />
+	    	</vbox>
+	    	
+	    </h:form>
+    </window>
+
+    </center>
+    </borderlayout>
