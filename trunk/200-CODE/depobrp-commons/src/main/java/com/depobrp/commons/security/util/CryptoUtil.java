@@ -9,20 +9,20 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 
+import org.apache.commons.codec.binary.Base64;
+
 import com.depobrp.commons.security.exception.SecurityException;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 /**
  * @author Erfin Feluzy 
  * 
  */
-@SuppressWarnings("restriction")
 public class CryptoUtil {
 	
 
 	private static final String UNICODE_FORMAT = "utf-8";
+	private static final String TRIPLE_DES = "DESede";
 
 	private KeySpec keySpec;
 	private SecretKeyFactory secretKeyFactory;
@@ -34,7 +34,7 @@ public class CryptoUtil {
 		
 		try {
 			MessageDigest md = MessageDigest.getInstance("md5");
-	        byte[] digestOfPassword = md.digest(DEFAULT_CRYPTO_SALT.getBytes("utf-8"));
+	        byte[] digestOfPassword = md.digest(DEFAULT_CRYPTO_SALT.getBytes(UNICODE_FORMAT));
 	         
 			keyAsBytes = Arrays.copyOf(digestOfPassword, 24);
 	        for (int j = 0,  k = 16; j < 8;)
@@ -43,7 +43,7 @@ public class CryptoUtil {
 	        }
 	        
 			keySpec = new DESedeKeySpec(keyAsBytes);
-			secretKeyFactory = SecretKeyFactory.getInstance("DESede");
+			secretKeyFactory = SecretKeyFactory.getInstance(TRIPLE_DES);
 			key = secretKeyFactory.generateSecret(keySpec);
 		} catch (Exception e) {
 			throw new SecurityException(e.getMessage());
@@ -61,13 +61,13 @@ public class CryptoUtil {
 		String encryptedString = null;
 		try {
 			
-			Cipher cipher = Cipher.getInstance("DESede");
+			Cipher cipher = Cipher.getInstance(TRIPLE_DES);
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 			
 			byte[] plainText = unencryptedString.getBytes(UNICODE_FORMAT);
 			byte[] encryptedText = cipher.doFinal(plainText);
-			BASE64Encoder base64encoder = new BASE64Encoder();
-			encryptedString = base64encoder.encode(encryptedText);
+			
+			encryptedString = Base64.encodeBase64String(encryptedText);
 			
 			return encryptedString;
 			
@@ -83,11 +83,10 @@ public class CryptoUtil {
 		String decryptedText=null;
 		
 		try {
-			Cipher cipher = Cipher.getInstance("DESede");
+			Cipher cipher = Cipher.getInstance(TRIPLE_DES);
 			cipher.init(Cipher.DECRYPT_MODE, key);
 			
-			BASE64Decoder base64decoder = new BASE64Decoder();
-			byte[] encryptedText = base64decoder.decodeBuffer(encryptedString);
+			byte[] encryptedText = Base64.decodeBase64(encryptedString);
 			byte[] plainText = cipher.doFinal(encryptedText);
 			decryptedText= bytesToString(plainText);
 			
@@ -116,7 +115,6 @@ public class CryptoUtil {
 		String text = "password";
 		String encrypt = util.encrypt(text);
 		String decrypt = util.decrypt(encrypt);
-		
 		
 		System.out.println(encrypt);
 		System.out.println(decrypt);

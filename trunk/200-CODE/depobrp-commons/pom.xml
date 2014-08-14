@@ -4,16 +4,22 @@
   <artifactId>depobrp-commons</artifactId>
   <version>1.0.0-BUILD-SNAPSHOT</version>
   <name>depobrp=commons</name>
-  
-  <dependencies>
-  
-  <dependency>
+
+	<dependencies>
+
+		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.1</version>
 		</dependency>
-  
-  </dependencies>
+		
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+
+	</dependencies>
   
   <build>
   	<plugins>
