@@ -31,7 +31,7 @@
 	<dependencies>
 	
 		<dependency>
-			<groupId>com.transiva</groupId>
+			<groupId>com.depobrp</groupId>
 			<artifactId>depobrp-model</artifactId>
 			<version>1.0.0-BUILD-SNAPSHOT</version>
 		</dependency>
