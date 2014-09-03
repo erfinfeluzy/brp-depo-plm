@@ -43,7 +43,7 @@ public class DeliveryOrderINTest {
 						FreightContainer.Type.HC, 
 						FreightContainer.Condition.AV, 
 						286,
-						FreightContainer.EmptyFull.EMPTY);
+						FreightContainer.EmptyFull.MTY);
 		
 		FreightContainer container2 = 
 				new FreightContainer(
@@ -53,7 +53,7 @@ public class DeliveryOrderINTest {
 						FreightContainer.Type.HC, 
 						FreightContainer.Condition.AV, 
 						286,
-						FreightContainer.EmptyFull.EMPTY);
+						FreightContainer.EmptyFull.MTY);
 		
 		Set<FreightContainer> containers = new HashSet<FreightContainer>();
 		containers.add(container1);

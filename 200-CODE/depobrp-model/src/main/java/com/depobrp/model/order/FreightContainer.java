@@ -93,11 +93,39 @@ public class FreightContainer extends Auditable {
 	}
 
 	public enum Condition {
-		AV, DMG
+		AV("Available"), DMG("Damage");
+		
+		Condition(String desc){
+			this.description = desc;
+		}
+		
+		private String description;
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
 	}
 
 	public enum EmptyFull {
-		EMPTY, FULL
+		MTY("EMPTY"), FCL("FULL");
+		
+		EmptyFull(String desc){
+			this.description = desc;
+		}
+		
+		private String description;
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
 	}
 	
 	public enum OrderStatus {
