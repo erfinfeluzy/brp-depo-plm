@@ -1,0 +1,161 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk>
+
+	<window border="normal" 
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init(MoveINDetailVM)"
+		hflex="1" vflex="1" contentStyle="overflow:auto"
+		title="Move IN"
+		width="600px"
+		closable="true"
+		maximizable="true">
+		
+		<style>
+			.fgrid tr.z-row td.z-row-inner, tr.z-row, div.z-grid-body
+			div.z-cell, div.z-grid, tr.z-row-over, td.z-row-inner {
+			border: none; overflow: hidden; zoom: 1; background: white;
+			border-top: none; border-left: none; color:#000000;
+			border-right: none; border-bottom: none;}
+
+			tr.z-row-over > td.z-row-inner > .z-row-cnt{color:#000000}
+		</style>
+		
+		<vbox align="center">
+		<label value="Container:"/>
+		<hbox>
+			<label value="@load(vm.currentContainer.containerNum)" style="font-size:25px"/>
+			<label value="-" style="font-size:25px"/>
+			<label value="@load(vm.currentContainer.checkDigit)" style="font-size:25px"/>
+		</hbox>
+		
+		
+		<tabbox>
+			<tabs>
+				<tab label="Condition"/>
+				<tab label="Services"/>
+			</tabs>
+			
+			<tabpanels>
+				<tabpanel>
+					<grid sclass="fgrid" oddRowSclass="none" >
+						<columns>
+							<column width="100px" valign="top" align="right"/>
+							<column valign="top"/>
+							<column width="100px" valign="top" align="right"/>
+							<column valign="top"/>
+						</columns>
+						
+						<rows >
+			
+							<row style="background:white">
+								<label value="Condition" />
+								
+								<combobox readonly="true" model="@load(vm.allConditions)">
+									<template name="model">
+									<comboitem label="@load(each.description)"/>
+									</template>
+								</combobox>
+									
+								<label value="Detail" />
+								
+								<cell rowspan="3">
+								<textbox multiline="true" height="100px" width="150px"/>
+								</cell>
+							</row>
+							
+							<row>
+								<label value="Empty / Full" />
+								
+								<combobox readonly="true" model="@load(vm.emptyOrFull)">
+									<template name="model">
+									<comboitem label="@load(each.description)"/>
+									</template>
+								</combobox>
+								
+							</row>
+							
+							<row>
+								<label value="Payload KGS" />
+								<hbox>
+									<intbox />
+									<label value="KGS"/>
+								</hbox>
+								
+							</row>
+							
+							<row>
+								<label value="SP 2" />
+								<textbox />
+							</row>
+							
+						</rows>
+						
+					</grid>
+				</tabpanel>
+				
+				
+				<!-- SERVICE TAB -->
+				<tabpanel>
+					<grid sclass="fgrid">
+						<columns>
+							<column width="100px" valign="top" align="right"/>
+							<column valign="top"/>
+							
+						</columns>
+						<rows>
+							<row>
+								<label value="Cleaning"/>
+								<hbox>
+									<checkbox/>
+									<combobox readonly="true" width="130px">
+										<comboitem label="PALET"/>
+										<comboitem label="DETERGENT"/>
+										<comboitem label="VACUM"/>
+									</combobox>
+								</hbox>
+							</row>
+							<row>
+								<label value="BRP Truck in"/>
+								<hbox>
+									<checkbox/>
+									<combobox readonly="true" width="130px">
+										<comboitem label="BG-1234-ABC"/>
+										<comboitem label="BG-3456-ABC"/>
+										<comboitem label="BG-4567-ABC"/>
+									</combobox>
+									<label value="Driver"/>
+									<combobox readonly="true" width="130px">
+										<comboitem label="Elin Martyanovrin"/>
+										<comboitem label="Marris Stela"/>
+										<comboitem label="Anggia Ayu"/>
+									</combobox>
+								</hbox>
+							</row>
+							<row>
+								<label value="Lift On Port"/>
+								<checkbox/>
+							</row>
+							<row>
+								<label value="Lift Off CY"/>
+								<checkbox/>
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+		
+		
+		
+		
+		<hbox>
+			<button label="Move IN" />
+			<separator width="10px"/>
+			<button label="Reset" />
+		</hbox>
+		
+		</vbox>
+		
+	</window>
+
+</zk>
