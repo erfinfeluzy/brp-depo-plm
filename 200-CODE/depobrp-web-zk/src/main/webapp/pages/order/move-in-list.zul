@@ -79,9 +79,8 @@
 					<listcell>
 						<hbox>
 							<image src="/imgs/edit.png"
-								tooltiptext="Edit Vessel" />
-							<image src="/imgs/delete.png"
-								tooltiptext="Delete Vessel" />
+								tooltiptext="Move IN" 
+								onClick="@command('prepareMoveIN', selectedContainer = each)"/>
 						</hbox>
 					</listcell>
 					<listcell>
