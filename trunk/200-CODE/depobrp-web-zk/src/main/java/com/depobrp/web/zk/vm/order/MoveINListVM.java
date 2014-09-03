@@ -1,24 +1,21 @@
 package com.depobrp.web.zk.vm.order;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.acls.domain.GrantedAuthoritySid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
+import org.zkoss.zul.Window;
 
 import com.depobrp.model.master.MLO;
 import com.depobrp.model.master.Vessel;
@@ -57,36 +54,8 @@ public class MoveINListVM {
 	@PostConstruct
 	public void init(){
 		reset();
-//		containerList = service.getReadyToMoveINList(filter, activePage, maxRowPerPage);
 		mloList = service.getAll(MLO.class);
 		vesselList = service.getAll(Vessel.class);
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(auth);
-		
-		final Collection<GrantedAuthority> granted = getPrincipalAuthorities();
-		System.out.println("get granted authority");
-		for (GrantedAuthority grantedAuthority : granted) {
-			System.out.println(grantedAuthority.getAuthority());
-		}
-	}
-	
-	private static Collection<GrantedAuthority> getPrincipalAuthorities() {
-	    Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-	
-	    System.out.println(currentUser);
-	    
-	    if (null == currentUser) {
-	        return Collections.emptyList();
-	    }
-	
-	    if ((null == currentUser.getAuthorities()) || (currentUser.getAuthorities().size() < 1)) {
-	        return Collections.emptyList();
-	    }
-	
-	    Collection granted = currentUser.getAuthorities();
-	
-	    return granted;
 	}
 	
 	@Command
@@ -109,6 +78,24 @@ public class MoveINListVM {
 	@NotifyChange("containerList")
 	public void lookupContainer(){
 		containerList = service.getReadyToMoveINList(filter, fromDate, toDate, activePage, maxRowPerPage);
+	}
+	
+	@Command
+	public void prepareMoveIN(@BindingParam("selectedContainer") FreightContainer container){
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		if(container != null && container.getId() != null){
+			this.selectedContainer = container;
+			param.put("selectedContainer", this.selectedContainer);
+			
+			Window popupWin = (Window) Executions.createComponents(
+					"/widgets/modal/move-in.zul", null, param);
+			
+			popupWin.doModal();
+			
+		}
+		
 	}
 
 	public Date getFromDate() {
