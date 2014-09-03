@@ -19,6 +19,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.ListModelList;
 
+import com.depobrp.commons.util.ISO6346Utils;
 import com.depobrp.model.master.Consignee;
 import com.depobrp.model.master.MLO;
 import com.depobrp.model.master.Vessel;
@@ -101,6 +102,14 @@ public class DeliveryOrderInVM extends BaseController {
 				existInContainerList() ){
 			
 			addContainerErrorMessage = "Unable to add container number";
+			return;
+		}
+		
+		int cd = ISO6346Utils.calculateCheckDigit(currentContainer.getContainerNum());
+		if(cd != currentContainer.getCheckDigit()){
+			
+			addContainerErrorMessage = "Correct CD is '"+ cd +"'";
+			currentContainer.setCheckDigit(cd);
 			return;
 		}
 		
