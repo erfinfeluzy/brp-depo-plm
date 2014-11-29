@@ -2,7 +2,7 @@
 <zk>
 
 	<window apply="org.zkoss.bind.BindComposer" border="none" height="99%"
-		width="100%" viewModel="@id('vm') @init(DeliveryOrderInVM)" 
+		width="100%" viewModel="@id('vm') @init(DeliveryOrderOutVM)" 
 		hflex="1" vflex="1" contentStyle="overflow:auto">
 		
 		<style>
@@ -14,7 +14,7 @@
 		<grid sclass="fgrid">
 			
 			<auxhead>
-				<auxheader label="Delivery Order IN" colspan="4"/>
+				<auxheader label="Delivery Order OUT" colspan="4"/>
 			</auxhead>
 
 			<columns>
@@ -27,8 +27,8 @@
 			<rows>
 			
 				<row>
-					<label value="No DO" />
-					<textbox value="@bind(vm.doIN.doNumber)" constraint="no empty" tabindex="1"/>
+					<label value="No DO Out" />
+					<textbox value="@bind(vm.doOUT.doNumber)" constraint="no empty" tabindex="1"/>
 					
 					
 					<cell rowspan="7" colspan="2" style="background-color:#ffffff">
@@ -43,8 +43,17 @@
 						
 						<hbox>
 							<label value="Num"/>
-							<textbox value="@bind(vm.currentContainer.containerNum)" 
-								constraint="no empty"/>
+							<textbox value="@bind(vm.currentContainer.containerNum)" />
+							
+							<combobox value="@bind(vm.currentContainer.containerNum)"
+								onChanging="@command('searchContainerNumber', autocomplete = event.value)"
+								model="@load(vm.autocompleteContainerList)" autocomplete="true" autodrop="true" 
+								selectedItem="@bind(vm.currentContainer)">
+								<template name="model">
+									<comboitem label="@load(each.containerNum)" value="@load(each.containerNum)">
+									</comboitem>
+								</template>
+							</combobox>
 							
 							<label value="CD"/>
 							<intbox width="25px" 
@@ -115,7 +124,7 @@
 					<label value="Owner" />
 					<combobox readonly="true" width="130px" constraint="no empty"
 						model="@load(vm.mloList)" 
-						selectedItem="@bind(vm.doIN.owner)" tabindex="2">
+						selectedItem="@bind(vm.doOUT.owner)" tabindex="2">
 						<template name="model">
 							<comboitem label="@load(each.name)"/>
 						</template>
@@ -124,10 +133,10 @@
 				</row>
 				
 				<row>
-					<label value="Consignee" />
+					<label value="EMKL" />
 					<combobox readonly="true" width="130px" constraint="no empty"
 						model="@load(vm.consigneeList)" 
-						selectedItem="@bind(vm.doIN.consignee)">
+						selectedItem="@bind(vm.doOUT.consignee)">
 						<template name="model">
 							<comboitem label="@load(each.name)"/>
 						</template>
@@ -135,40 +144,38 @@
 				</row>
 				
 				<row>
-					<label value="DO Date" />
+					<label value="DO Out Date" />
 					<datebox width="130px" 
 						readonly="true"
-						value="@bind(vm.doIN.deliveryDate)" 
+						value="@bind(vm.doOUT.deliveryDate)" 
 						constraint="no empty"/>
 				</row>
 				
 				<row>
-					<label value="Ex-Vessel" />
+					<label value="Next-Vessel" />
 					<hbox>
 						<combobox readonly="true" width="130px" constraint="no empty"
 							model="@load(vm.vesselList)" 
-							selectedItem="@bind(vm.doIN.exVessel)">
+							selectedItem="@bind(vm.doOUT.nextVessel)">
 							<template name="model">
 								<comboitem label="@load(each.name)"/>
 							</template>
 						</combobox>
 						
 						<label value="Voyage. No" />
-						<textbox value="@bind(vm.doIN.exVesselVoyageNo)" width="50px" constraint="no empty"/>
+						<textbox value="@bind(vm.doOUT.nextVesselVoyageNo)" width="50px" constraint="no empty"/>
 					</hbox>
 				</row>
 				
 				<row>
-					<label value="Ex-Port" />
-					<combobox width="130px">
-						<comboitem label="Port PLM" />
-					</combobox>
+					<label value="Destination City/Port" />
+					<textbox value="@bind(vm.doOUT.nextCityPort)" width="130px" constraint="no empty"/>
 				</row>
 				
 				<row>
 					<label value="Note IN"  />
 					<textbox height="60px" width="80%" multiline="true" 
-						value="@bind(vm.doIN.noteIn)"/>
+						value="@bind(vm.doOUT.noteIn)"/>
 				</row>
 				
 				<row>
@@ -178,9 +185,9 @@
 				<row>
 					<hbox/>
 					<hbox>
-						<button label="Save" width="100px" sclass="btn-green" onClick="@command('saveDeliveryOrderIN')"/>
+						<button label="Save" width="100px" sclass="btn-green" onClick="@command('saveDeliveryOrderOUT')"/>
 						<separator width="3px"/>
-						<button label="Reset" width="100px" sclass="btn-red" onClick="@global-command('resetDeliveryOrderINPage')"/>
+						<button label="Reset" width="100px" sclass="btn-red" onClick="@global-command('resetDeliveryOrderOUTPage')"/>
 					</hbox>
 				</row>
 				

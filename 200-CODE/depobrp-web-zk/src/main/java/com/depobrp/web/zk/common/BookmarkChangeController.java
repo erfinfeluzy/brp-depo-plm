@@ -1,6 +1,7 @@
 package com.depobrp.web.zk.common;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.BookmarkEvent;
 import org.zkoss.zk.ui.event.SerializableEventListener;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -27,7 +28,7 @@ public class BookmarkChangeController extends SelectorComposer<Component> {
 
 			public void onEvent(BookmarkEvent event) throws Exception {
 				String bookmark = event.getBookmark();
-//				if(bookmark.startsWith("p_")){
+
 				if(bookmark.startsWith(Context.BOOKMARK_SEPARATOR)){
 					String p = bookmark.substring(Context.BOOKMARK_SEPARATOR.length());
 					Page page = pageConfig.getPage(p);
@@ -36,6 +37,7 @@ public class BookmarkChangeController extends SelectorComposer<Component> {
 						//use iterable to find the first include only
 						Include include = (Include)Selectors.iterable(getPage(), "#mainInclude").iterator().next();
 						include.setSrc(page.getUri());
+						Sessions.getCurrent().setAttribute("CURRENT_PAGE", page.getName());
 					}
 				}
 			}

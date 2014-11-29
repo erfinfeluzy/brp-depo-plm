@@ -24,15 +24,7 @@ public abstract class BaseController {
 	private static final String NOTIF_INFORMATION = "Information";
 	private static final String NOTIF_CONFIRMATION = "Confirmation";
 
-	protected void info(String message){
-    	Messagebox.show(message, 
-    			NOTIF_INFORMATION, 
-				Messagebox.OK, 
-				Messagebox.INFORMATION);
-    	
-    	Clients.evalJavaScript("playSound();");
-    	
-    }
+	
 	
 	protected User getUserContext(){
 		
@@ -64,6 +56,26 @@ public abstract class BaseController {
 		
 		userActivityService.saveActivity(object.toString(), getUsername());
 	}
+	
+	protected void alert(String message){
+    	Messagebox.show(message, 
+    			NOTIF_INFORMATION, 
+				Messagebox.OK, 
+				Messagebox.ERROR);
+    	
+    	Clients.evalJavaScript("playSound();");
+    	
+    }
+	
+	protected void info(String message){
+    	Messagebox.show(message, 
+    			NOTIF_INFORMATION, 
+				Messagebox.OK, 
+				Messagebox.INFORMATION);
+    	
+    	Clients.evalJavaScript("playSound();");
+    	
+    }
 	
 	protected void confirm(String confirmationMessage, EventListener<Event> callbackEvent){
 		

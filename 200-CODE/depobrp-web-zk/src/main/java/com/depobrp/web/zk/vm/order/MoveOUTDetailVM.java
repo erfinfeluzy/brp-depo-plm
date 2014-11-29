@@ -25,9 +25,9 @@ import com.depobrp.model.order.FreightContainer.OrderStatus;
 import com.depobrp.service.common.ObjectService;
 import com.depobrp.web.zk.common.BaseController;
 
-@Component("MoveINDetailVM")
+@Component("MoveOUTDetailVM")
 @Scope("prototype")
-public class MoveINDetailVM extends BaseController {
+public class MoveOUTDetailVM extends BaseController {
 
 	@Init
 	public void init(
@@ -46,7 +46,7 @@ public class MoveINDetailVM extends BaseController {
 
 	private ListModelList<EmptyFull> emptyOrFull;
 	
-	@Wire("#moveINWindow")
+	@Wire("#moveOUTWindow")
 	private Window window;
 	
 	@Autowired
@@ -55,31 +55,30 @@ public class MoveINDetailVM extends BaseController {
 	
 	
 	@Command
-	public void moveIN(){
-		confirm("Do you want to Move IN this container?", 
+	public void moveOUT(){
+		confirm("Do you want to Move OUT this container?", 
 			new EventListener<Event>() {
 				@Override
 				public void onEvent(Event event) throws Exception {
 					if (event.getName().equals("onOK")) {
-						moveInAfterConfirm();
+						moveOutAfterConfirm();
 					} 
 				}
 			});
 	}
 	
-	private void moveInAfterConfirm() {
+	private void moveOutAfterConfirm() {
 		
 		try {
-			
 			Date trxDate = new Date();
-			
-			currentContainer.setOrderStatus(OrderStatus.ON_STORAGE);
-			currentContainer.setMoveINDate(trxDate);
+			System.out.println("save:" + currentContainer.getContainerNum());
+			currentContainer.setOrderStatus(OrderStatus.MOVE_OUT);
+			currentContainer.setMoveOUTDate(trxDate);
 			currentContainer.setUpdatedBy(getUsername());
 			currentContainer.setUpdatedDate(trxDate);
 			service.save(currentContainer);
 			
-			audit("Move IN:" + currentContainer.getContainerNum());
+			audit("Move OUT:" + currentContainer.getContainerNum());
 			
 			info("Successfuly move IN container:" + currentContainer.getContainerNum());
 			

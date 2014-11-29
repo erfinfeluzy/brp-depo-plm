@@ -11,12 +11,12 @@
     validationMessages="@id('vmsgs')"
 	title="Consignee Detail"
 	border="normal"
-	width="400px"
+	width="450px"
 	closable="true"
 	maximizable="true">
 	
 	<vlayout>
-		<grid>
+		<grid sclass="fgrid">
 			<columns>
 				<column width="100px"/>
 				<column />
@@ -53,8 +53,20 @@
 		
 		</grid>
 		
-		<button label="Save" onClick="@command('saveConsignee')"/>
+		<hbox pack="center" hflex="3">
+			<button label="Save" 
+				onClick="@command('saveConsignee')"
+				sclass="btn-green"
+				width="80px"/>
+			
+			<separator width="3px"/>
+			
+			<button label="Cancel" 
+				onClick="consigneeDetailDialog.detach();"
+				sclass="btn-red"
+				width="80px"/>
 	
+		</hbox>
 	</vlayout>
 
 </window>

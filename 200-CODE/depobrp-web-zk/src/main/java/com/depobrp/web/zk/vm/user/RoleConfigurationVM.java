@@ -14,6 +14,8 @@ import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
@@ -64,17 +66,27 @@ public class RoleConfigurationVM extends BaseController {
 	
 	@Command
 	public void saveRoleModule(){
+		confirm("Do you want to save Role?", new EventListener<Event>() {
+			
+			@Override
+			public void onEvent(Event event) throws Exception {
+				saveRoleModuleAfterConfirmation();
+			}
+		});
+	}
+
+	public void saveRoleModuleAfterConfirmation(){
 		if(createNewRole){
-			System.out.println("create new role");
+			
 			Role newRole = new Role(newRoleName);
 			newRole.setModules(new HashSet<Module>(selectedModule));
 			service.save(newRole);
-			Clients.showNotification("Successfully saved role: " + newRoleName);
+			info("Successfully saved role: " + newRoleName);
 		}else if(selectedRole != null){
-			System.out.println("update role");
+			
 			selectedRole.setModules(new HashSet<Module>(selectedModule));
 			service.save(selectedRole);
-			Clients.showNotification("Successfully saved role: " + selectedRole.getName());
+			info("Successfully saved role: " + selectedRole.getName());
 		}
 		
 	}

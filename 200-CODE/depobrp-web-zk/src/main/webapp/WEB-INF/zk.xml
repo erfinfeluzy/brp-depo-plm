@@ -5,10 +5,10 @@
         <addon-uri>/WEB-INF/zk-addon/ckez-bind-addon.xml</addon-uri>
     </language-config>
 
-	<library-property>
+<!-- 	<library-property>
 	    <name>org.zkoss.theme.preferred</name>
-	    <value>sapphire</value> <!-- or silvertail, atlantic -->
-	</library-property>
+	    <value>sapphire</value> or silvertail, atlantic
+	</library-property> -->
 
 	<session-config>
 		<session-timeout>1800</session-timeout>
