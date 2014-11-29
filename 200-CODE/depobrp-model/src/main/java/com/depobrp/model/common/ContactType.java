@@ -32,6 +32,20 @@ public abstract class ContactType
 
 	@Column(name = "FAX", length = 32)
 	private String fax;
+	
+	@Column(name = "TAX_PAYER_ID_NUM", length = 32)
+	private String taxPayerIdNum;
+	
+	
+	
+
+	public String getTaxPayerIdNum() {
+		return taxPayerIdNum;
+	}
+
+	public void setTaxPayerIdNum(String taxPayerIdNum) {
+		this.taxPayerIdNum = taxPayerIdNum;
+	}
 
 	public String getName() {
 		return name;

@@ -20,11 +20,20 @@ public class FreightContainerServiceImpl
 			extends ObjectServiceImpl
 			implements FreightContainerService{
 	
-	public TablePager<FreightContainer> getReadyToMoveINList(final FreightContainer filter, Integer activePage, Integer maxRowPerPage){
+	public TablePager<FreightContainer> getReadyToMoveINList(
+			final FreightContainer filter, 
+			Integer activePage, 
+			Integer maxRowPerPage){
 		
 		return 	getReadyToMoveINList(filter, null, null, activePage, maxRowPerPage);
 	}
 	
+	@Override
+	public TablePager<FreightContainer> getOnStorageList(FreightContainer filter,
+			Date from, Date to, int activePage, int maxRowPerPage) {
+		
+		return getFreightContainerList(filter, from, to, activePage, maxRowPerPage, OrderStatus.ON_STORAGE);
+	}
 	
 	public TablePager<FreightContainer> getReadyToMoveINList(
 			final FreightContainer filter, 
@@ -33,6 +42,18 @@ public class FreightContainerServiceImpl
 			Integer activePage, 
 			Integer maxRowPerPage){
 		
+		return getFreightContainerList(filter, from, to, activePage, maxRowPerPage, OrderStatus.DO_IN);
+	}
+	
+	
+	public TablePager<FreightContainer> getFreightContainerList(
+			final FreightContainer filter, 
+			Date from, 
+			Date to, 
+			Integer activePage, 
+			Integer maxRowPerPage, 
+			OrderStatus orderStatus){
+		
 		if(activePage == null) activePage = 1;
 		if(maxRowPerPage == null) maxRowPerPage = 10;
 		
@@ -40,16 +61,21 @@ public class FreightContainerServiceImpl
 				" left join fetch fc.doIN " +
 				" left join fetch fc.doIN.owner " +
 				" left join fetch fc.doIN.exVessel " +
-				" where 1=1 " +
-				" and fc.orderStatus = :orderStatus ";
+				" where 1=1 ";
 		
 		String hqlCount = "select count(fc.id) " +
 				" from FreightContainer fc " +
-				" where 1=1 " +
-				" and fc.orderStatus = :orderStatus ";
+				" where 1=1 ";
+				
 
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("orderStatus", OrderStatus.DO_IN);
+		
+		if(orderStatus != null){
+			hql = hql + " and fc.orderStatus = :orderStatus ";
+			hqlCount = hqlCount + " and fc.orderStatus = :orderStatus ";
+			paramMap.put("orderStatus", orderStatus);
+		}
+		
 		
 		if(filter!=null && filter.getContainerNum() != null){
 			hql = hql + " and fc.containerNum like :containerNum ";
@@ -99,6 +125,6 @@ public class FreightContainerServiceImpl
 		return super.getFromHql(hql, new Object[]{(likeFilter)}, 10);
 		
 	}
-	
+
 }
 

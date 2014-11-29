@@ -1,5 +1,7 @@
 package com.depobrp.model.order;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,14 +42,11 @@ public class FreightContainer extends Auditable {
 	public FreightContainer() {
 		super();
 	}
-	
-	
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4762910165748544510L;
-	
 	
 
 	@Id
@@ -84,9 +83,21 @@ public class FreightContainer extends Auditable {
 	@JoinColumn (name="DO_ID", nullable=false)
 	private DeliveryOrderIN doIN;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn (name="DO_OUT_ID", nullable=true)
+	private DeliveryOrderOUT doOUT;
+	
 	@Column(name = "ORDER_STATUS", length=32)
 	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
+	
+	@Column(name = "MOVE_IN_DATE")
+	private Date moveINDate;
+
+	@Column(name = "MOVE_OUT_DATE")
+	private Date moveOUTDate;
+	
+	
 
 	public enum Type {
 		GP, HC
@@ -129,12 +140,12 @@ public class FreightContainer extends Auditable {
 	}
 	
 	public enum OrderStatus {
-		DO_IN, MOVE_IN, DO_OUT, MOVE_OUT
+		DO_IN, ON_STORAGE, DO_OUT, MOVE_OUT
 	}
 	
 	public enum Size {
 		
-		F_20("20\""), F_40("40\"");
+		F_20("20FT"), F_40("40FT");
 		
 		Size(String desc){
 			this.description = desc;
@@ -229,6 +240,30 @@ public class FreightContainer extends Auditable {
 
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
+	}
+
+	public Date getMoveINDate() {
+		return moveINDate;
+	}
+
+	public void setMoveINDate(Date moveINDate) {
+		this.moveINDate = moveINDate;
+	}
+
+	public Date getMoveOUTDate() {
+		return moveOUTDate;
+	}
+
+	public void setMoveOUTDate(Date moveOUTDate) {
+		this.moveOUTDate = moveOUTDate;
+	}
+
+	public DeliveryOrderOUT getDoOUT() {
+		return doOUT;
+	}
+
+	public void setDoOUT(DeliveryOrderOUT doOUT) {
+		this.doOUT = doOUT;
 	}
 
 }

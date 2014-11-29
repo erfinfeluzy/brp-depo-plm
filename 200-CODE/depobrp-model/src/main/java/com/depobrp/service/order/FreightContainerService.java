@@ -14,5 +14,8 @@ public interface FreightContainerService extends ObjectService {
 	TablePager<FreightContainer> getReadyToMoveINList(FreightContainer filter, Date from, Date to, Integer activePage, Integer maxRowPerPage);
 	
 	List<FreightContainer> getFreightContainerByName(String filter);
+
+	TablePager<FreightContainer> getOnStorageList(FreightContainer filter,
+			Date fromDate, Date toDate, int activePage, int maxRowPerPage);
 }
 

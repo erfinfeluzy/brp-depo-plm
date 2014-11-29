@@ -20,8 +20,8 @@ import com.depobrp.model.master.MLO;
 import com.depobrp.model.master.Vessel;
 
 @Entity
-@Table(name = "TBL_OP_DELIVERY_ORDER_IN")
-public class DeliveryOrderIN extends Auditable{
+@Table(name = "TBL_OP_DELIVERY_ORDER_OUT")
+public class DeliveryOrderOUT extends Auditable{
 
 	/**
 	 * 
@@ -29,7 +29,7 @@ public class DeliveryOrderIN extends Auditable{
 	private static final long serialVersionUID = 9160558624314682617L;
 
 	@Id
-	@Column(name = "DO_ID")
+	@Column(name = "DO_OUT_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
@@ -47,21 +47,21 @@ public class DeliveryOrderIN extends Auditable{
 	@Column(name = "DELIVERY_DATE")
 	private Date deliveryDate;
 	
-	@OneToMany(mappedBy="doIN")
+	@OneToMany(mappedBy="doOUT")
 	private Set<FreightContainer> containers;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn (name="EX_VESSEL_ID", nullable=false)
-	private Vessel exVessel;
+	@JoinColumn (name="NEXT_VESSEL_ID", nullable=false)
+	private Vessel nextVessel;
 	
-	@Column(name = "EX_VESSEL_VNUM")
-	private String exVesselVoyageNo;
+	@Column(name = "NEXT_VESSEL_VNUM")
+	private String nextVesselVoyageNo;
 	
-	@Column(name = "NOTE_IN")
+	@Column(name = "NOTE_OUT")
 	private String noteIn;
 	
-	@Column(name = "EX_CITY_PORT")
-	private String exCityPort;
+	@Column(name = "NEXT_CITY_PORT", length = 32)
+	private String nextCityPort;
 	
 	@Column(name = "INITIAL_CONTAINER_COUNT")
 	private Integer initialContainerCount;
@@ -114,20 +114,20 @@ public class DeliveryOrderIN extends Auditable{
 		this.containers = containers;
 	}
 
-	public Vessel getExVessel() {
-		return exVessel;
+	public Vessel getNextVessel() {
+		return nextVessel;
 	}
 
-	public void setExVessel(Vessel exVessel) {
-		this.exVessel = exVessel;
+	public void setNextVessel(Vessel nextVessel) {
+		this.nextVessel = nextVessel;
 	}
 
-	public String getExVesselVoyageNo() {
-		return exVesselVoyageNo;
+	public String getNextVesselVoyageNo() {
+		return nextVesselVoyageNo;
 	}
 
-	public void setExVesselVoyageNo(String exVesselVoyageNo) {
-		this.exVesselVoyageNo = exVesselVoyageNo;
+	public void setNextVesselVoyageNo(String nextVesselVoyageNo) {
+		this.nextVesselVoyageNo = nextVesselVoyageNo;
 	}
 
 	public String getNoteIn() {
@@ -146,12 +146,12 @@ public class DeliveryOrderIN extends Auditable{
 		this.initialContainerCount = initialContainerCount;
 	}
 
-	public String getExCityPort() {
-		return exCityPort;
+	public String getNextCityPort() {
+		return nextCityPort;
 	}
 
-	public void setExCityPort(String exCityPort) {
-		this.exCityPort = exCityPort;
+	public void setNextCityPort(String nextCityPort) {
+		this.nextCityPort = nextCityPort;
 	}
 	
 	

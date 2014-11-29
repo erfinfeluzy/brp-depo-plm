@@ -11,6 +11,7 @@
   <mapping class="com.depobrp.model.master.Vessel"/>
   <mapping class="com.depobrp.model.master.Consignee"/>
   <mapping class="com.depobrp.model.master.Shiper"/>
+  <mapping class="com.depobrp.model.master.EMKL"/>
   
   <mapping class="com.depobrp.model.user.User"/>
   <mapping class="com.depobrp.model.user.UserActivity"/>
@@ -19,6 +20,7 @@
   <mapping class="com.depobrp.model.user.Module"/>
 
   <mapping class="com.depobrp.model.order.DeliveryOrderIN"/>
+  <mapping class="com.depobrp.model.order.DeliveryOrderOUT"/>
   <mapping class="com.depobrp.model.order.FreightContainer"/>
   
  </session-factory>
