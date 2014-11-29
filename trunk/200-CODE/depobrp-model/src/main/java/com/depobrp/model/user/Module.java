@@ -40,6 +40,9 @@ public class Module extends Auditable {
 	
 	@Column(name = "NAME")
 	private String name;
+	
+	@Column(name = "ICON_URI")
+	private String iconUri;
 
 	@OneToMany(mappedBy="module")
 	private Set<Page> pages = new HashSet<Page>();
@@ -102,6 +105,14 @@ public class Module extends Auditable {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public String getIconUri() {
+		return iconUri;
+	}
+
+	public void setIconUri(String iconUri) {
+		this.iconUri = iconUri;
 	}
 
 }
