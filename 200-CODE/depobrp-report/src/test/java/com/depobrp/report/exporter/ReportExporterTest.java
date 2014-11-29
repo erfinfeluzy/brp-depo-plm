@@ -1,12 +1,9 @@
 package com.depobrp.report.exporter;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.sql.DataSource;
+import java.util.Map;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -14,7 +11,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -28,6 +24,7 @@ public class ReportExporterTest {
 
 		try {
 			
+			System.out.println("start");
 //			dbConn = ds.getConnection();
 
 //			JasperPrint jasperPrint = JasperFillManager.fillReport(
@@ -36,28 +33,22 @@ public class ReportExporterTest {
 //                    dbConn);
 			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					"/data/workspace/BRP/depobrp-report/src/main/resources/belajar-report.jasper",
-                    new HashMap<String, Object>(), 
+					"/data/workspace/NEW-BRP-SVN/depobrp-report/src/main/resources/brp-template-report.jasper",
+                    getParamMap(), 
                     getBeanCollectionDS());
 			
-			String pdfOutputname = "/Users/visitek/Desktop/belajar-report-java-3.pdf";
+			String pdfOutputname = "/Users/visitek/Desktop/TEMP-erfin-report-1.pdf";
 
 			JasperExportManager.exportReportToPdfFile(jasperPrint, pdfOutputname);
 
-			System.out.println("finish");
+			System.out.println("finishxxx");
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 		
 		} finally {
-//			if (dbConn != null)
-//				try {
-//					dbConn.close();
-//				} catch (SQLException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+
 		}
 	}
 	
@@ -72,8 +63,18 @@ public class ReportExporterTest {
 		
 		list.add(new SampleDTO("erfin", "anggia"));
 		list.add(new SampleDTO("elin", "sumarmo"));
+		list.add(new SampleDTO("rengga", "wicitra"));
 		
 		return list;
+	}
+	
+	private static Map<String, Object> getParamMap(){
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("shiper", "Shiper Name");
+		
+		return map;
 	}
 
 }

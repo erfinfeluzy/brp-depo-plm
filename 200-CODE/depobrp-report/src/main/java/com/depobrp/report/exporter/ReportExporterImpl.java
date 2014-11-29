@@ -1,86 +1,49 @@
 package com.depobrp.report.exporter;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.springframework.stereotype.Component;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
+import org.springframework.stereotype.Component;
+
 @Component("reportExporter")
 public class ReportExporterImpl implements ReportExporter {
-
-	public byte[] export(DataSource dataSource, 
-			String jasperTemplateLocation,
-			Map<String, Object> param) {
-		
-		return export(dataSource, ReportType.PDF, jasperTemplateLocation, param);
-	}
 	
+	@Override
 	public byte[] export(
-			DataSource dataSource, 
-			String jasperTemplateLocation) throws RuntimeException{
+			ReportType reportType, 
+			List<?> data,
+			Map<String, Object> param, 
+			String classpathReportTemplateLocation) 
+					throws Exception {
 		
-		return export(dataSource, ReportType.PDF, jasperTemplateLocation, new HashMap<String, Object>());
-	}
-	
-	public byte[] export(
-			DataSource dataSource, 
-			ReportType reportType,
-			String jasperTemplateLocation) throws RuntimeException{
+		InputStream in = ReportExporterImpl.class.getClassLoader().getResourceAsStream(classpathReportTemplateLocation);
 		
-		return export(dataSource, reportType, jasperTemplateLocation, new HashMap<String, Object>());
-	}
-	
-	public byte[] export(
-			DataSource dataSource, 
-			ReportType reportType,
-			String jasperTemplateLocation,
-			Map<String, Object> param) throws RuntimeException{
+		JasperPrint jasperPrint = JasperFillManager.fillReport(
+				in,
+                param, 
+                new JRBeanCollectionDataSource(data));
 
-		Connection dbConn = null;
+		byte[] output = null;
 		
-		try {
-			
-			if(dataSource == null)
-				throw new RuntimeException("No Datasource supplied");
-			
-			dbConn = dataSource.getConnection();
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					jasperTemplateLocation,
-					param, 
-					dbConn);
-			
-			byte[] output = null;
-			
-			if(reportType == ReportType.PDF){
-				output = generatePDF(jasperPrint);
-			}else{
-				output = generateExcel(jasperPrint); 
-			}
-			
-			return output;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Failed Generating Report");
-
-		} finally {
-			closeDatabaseConnection(dbConn);
+		if(reportType == ReportType.PDF){
+			output = generatePDF(jasperPrint);
+		}else{
+			output = generateExcel(jasperPrint); 
 		}
+		
+		return output;
 	}
-	
+
 	private byte[] generatePDF(JasperPrint jasperPrint) throws JRException{
 		
 		return JasperExportManager.exportReportToPdf(jasperPrint);
@@ -107,17 +70,6 @@ public class ReportExporterImpl implements ReportExporter {
         exporterXLS.exportReport();
         
         return byteArrayOutputStream.toByteArray();
-	}
-	
-	private void closeDatabaseConnection(Connection conn){
-		
-		if (conn != null){
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 }
