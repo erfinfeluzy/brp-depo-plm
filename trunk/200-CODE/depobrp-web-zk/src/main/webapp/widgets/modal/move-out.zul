@@ -1,11 +1,11 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>
 
-	<window border="normal" id="moveINWindow"
+	<window border="normal" id="moveOUTWindow"
 		apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm') @init(MoveINDetailVM)"
+		viewModel="@id('vm') @init(MoveOUTDetailVM)"
 		hflex="1" vflex="1" contentStyle="overflow:auto"
-		title="Move IN"
+		title="Move OUT"
 		width="600px"
 		closable="true"
 		maximizable="true">
@@ -95,17 +95,7 @@
 							
 						</columns>
 						<rows>
-							<row>
-								<label value="Cleaning"/>
-								<hbox>
-									<checkbox/>
-									<combobox readonly="true" width="130px">
-										<comboitem label="PALET"/>
-										<comboitem label="DETERGENT"/>
-										<comboitem label="VACUM"/>
-									</combobox>
-								</hbox>
-							</row>
+							
 							<row>
 								<label value="BRP Truck in"/>
 								<hbox>
@@ -124,11 +114,11 @@
 								</hbox>
 							</row>
 							<row>
-								<label value="Lift On Port"/>
+								<label value="Lift On CY"/>
 								<checkbox/>
 							</row>
 							<row>
-								<label value="Lift Off CY"/>
+								<label value="Lift Off PORT"/>
 								<checkbox/>
 							</row>
 						</rows>
@@ -136,22 +126,19 @@
 				</tabpanel>
 			</tabpanels>
 		</tabbox>
-		
-		
-		
-		
+
 		<hbox style="padding:5px">
-			<button label="Move IN" 
-				onClick="@command('moveIN')" 
+			<button label="Move OUT" 
+				onClick="@command('moveOUT')" 
 				sclass="btn-green" 
 				width="80px"/>
-				
+			
 			<separator width="3px"/>
 			
-			<button label="Cancel"
-				onClick="moveINWindow.detach();"
-				sclass="btn-red" 
-				width="80px"/>
+			<button label="Cancel" 
+				sclass="btn-red"
+				width="80px"
+				onClick="moveOUTWindow.detach();"/>
 		</hbox>
 		
 		</vbox>

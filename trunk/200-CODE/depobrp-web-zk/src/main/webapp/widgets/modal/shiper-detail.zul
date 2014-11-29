@@ -11,15 +11,15 @@
     validationMessages="@id('vmsgs')"
 	title="Shiper Detail"
 	border="normal"
-	width="400px"
+	width="450px"
 	closable="true"
 	maximizable="true">
 	
 	<vlayout>
-		<grid>
+		<grid sclass="fgrid">
 			<columns>
-				<column width="100px"/>
-				<column />
+				<column width="100px" align="right"/>
+				<column/>
 				<column />
 			</columns>
 			<rows>
@@ -52,9 +52,17 @@
 			</rows>
 		
 		</grid>
-		
-		<button label="Save" onClick="@command('saveShiper')"/>
-	
+		<hbox pack="center" hflex="3">
+			<button label="Save" 
+					onClick="@command('saveShiper')" 
+					sclass="btn-green"
+					width="80px"/>
+			
+			<button label="Cancel" 
+					sclass="btn-red" 
+					onClick="shiperDetailDialog.detach();"
+					width="80px"/>
+		</hbox>
 	</vlayout>
 
 </window>

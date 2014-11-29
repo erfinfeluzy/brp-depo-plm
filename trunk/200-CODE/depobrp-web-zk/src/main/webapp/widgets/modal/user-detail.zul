@@ -9,24 +9,28 @@
         	@save(vm.currentUser, before='saveUser')"
 	title="User Detail"
 	border="normal"
-	width="400px"
+	width="450px"
 	closable="true"
 	maximizable="true">
 	
 	<vlayout>
-		<grid>
+		<grid sclass="fgrid">
 			<columns>
-				<column width="100px"/>
+				<column width="120px" align="right"/>
 				<column />
 			</columns>
 			<rows>
 				<row>
 					<label value="Username" />
-					<textbox value="@bind(fx.username)" />
+					<textbox value="@bind(fx.username)" constraint="no empty"/>
 				</row>
 				<row>
 					<label value="Password" />
-					<textbox value="@bind(fx.password)" type="password"/>
+					<textbox value="@bind(fx.password)" type="password" constraint="no empty"/>
+				</row>
+				<row>
+					<label value="Retype Password" />
+					<textbox constraint="no empty"/>
 				</row>
 				<row>
 					<label value="Supervisor" />
@@ -40,17 +44,27 @@
 				</row>
 				<row>
 					<label value="Role" />
-					<listbox model="@load(vm.allRoles)" selectedItem="@bind(vm.selectedRole)" mold="select">
+					<combobox model="@load(vm.allRoles)" 
+						selectedItem="@bind(vm.selectedRole)" width="80%" >
 	                    <template name="model">
-	                        <listitem  label="@load(each.name)" />
+	                        <comboitem  label="@load(each.name)" />
 	                    </template>
-	                </listbox>
+	                </combobox>
 				</row>
 			</rows>
 		
 		</grid>
-		<hbox align="end" width="100%">
-			<button label="Save" onClick="@command('saveUser')"/>
+		
+		<hbox hflex="3" pack="center" style="padding:10px">
+			<button label="Save" 
+				onClick="@command('saveUser')"
+				width="80px"
+				sclass="btn-green"/>
+				
+			<button label="Cancel" 
+				onClick="userDetailDialog.detach();"
+				width="80px"
+				sclass="btn-red"/>
 		</hbox>
 	</vlayout>
 

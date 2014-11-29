@@ -11,12 +11,12 @@
     validationMessages="@id('vmsgs')"
 	title="MLO Detail"
 	border="normal"
-	width="400px"
+	width="450px"
 	closable="true"
 	maximizable="true">
 	
 	<vlayout>
-		<grid>
+		<grid sclass="fgrid">
 			<columns>
 				<column width="100px"/>
 				<column />
@@ -53,7 +53,20 @@
 		
 		</grid>
 		
-		<button label="Save" onClick="@command('saveMlo')"/>
+		<hbox pack="center" hflex="3">
+			<button label="Save" 
+				onClick="@command('saveMlo')"
+				width="80px"
+				sclass="btn-green"/>
+			
+			<separator width="3px"/>	
+			
+			<button label="Cancel" 
+				onClick="mloDetailDialog.detach();"
+				width="80px"
+				sclass="btn-red"/>
+		</hbox>
+		
 	
 	</vlayout>
 

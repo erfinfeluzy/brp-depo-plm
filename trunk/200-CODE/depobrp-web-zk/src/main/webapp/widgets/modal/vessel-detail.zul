@@ -11,14 +11,15 @@
     validationMessages="@id('vmsgs')"
 	title="Vessel Detail"
 	border="normal"
-	width="400px"
+	width="450px"
 	closable="true"
 	maximizable="true">
+
 	
 	<vlayout>
-		<grid>
+		<grid sclass="fgrid">
 			<columns>
-				<column width="100px"/>
+				<column width="80px" align="right"/>
 				<column />
 				<column />
 			</columns>
@@ -49,11 +50,27 @@
 					<label class="error" value="@load(vmsgs['phone2'])" />
 				</row>
 				
+				<row spans="3">
+					<hbox hflex="3" pack="center">
+						<button label="Save" 
+							sclass="btn-green" 
+							onClick="@command('saveVessel')"
+							width="80px"/>
+							
+						<separator width="3px"/>
+						
+						<button label="Cancel" 
+							sclass="btn-red" 
+							onClick="vesselDetailDialog.detach();"
+							width="80px"/>
+					</hbox>
+				</row>
+				
 			</rows>
 		
 		</grid>
 		
-		<button label="Save" onClick="@command('saveVessel')"/>
+		
 	
 	</vlayout>
 

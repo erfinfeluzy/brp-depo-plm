@@ -1,10 +1,11 @@
 package com.depobrp.web.mvc.report;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,13 +13,16 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.depobrp.model.user.User;
 import com.depobrp.report.exporter.ReportExporter;
+import com.depobrp.report.exporter.ReportType;
+import com.depobrp.service.user.UserService;
 
 @Controller
 public class UserReportMVC {
 	
 	@Autowired
-	private DataSource dataSource;
+	private UserService userService;
 	
 	@Autowired
 	private ReportExporter reportExporter;
@@ -34,11 +38,18 @@ public class UserReportMVC {
 		
 		if("pdf".equalsIgnoreCase(reportType)){
 			
-			String reportPath = request.getSession().getServletContext().getRealPath("/WEB-INF/classes/report")  + "/belajar-report.jasper";
+			String reportPath = "brp-template-report.jasper";
+
 		
 			try {
 				
-				byte[] byteStream = reportExporter.export(dataSource, reportPath);
+				List<User> users = userService.getAll(User.class);
+				
+				byte[] byteStream = reportExporter.export(
+						ReportType.PDF, 
+						users, 
+						new HashMap<String, Object>(), 
+						reportPath);
 				
 				response.setContentType(FILE_TYPE);
 				response.setContentLength(byteStream.length);
@@ -47,6 +58,8 @@ public class UserReportMVC {
 				FileCopyUtils.copy(byteStream, response.getOutputStream());
 
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				

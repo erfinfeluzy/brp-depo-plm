@@ -3,68 +3,106 @@
 <window id="roleConfigurationDialog"
 	apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('vm') @init(RoleConfigurationVM)"
-	title="Module Configuration"
+	title="Role Configuration"
 	border="normal"
-	width="560px"
+	width="570px"
 	closable="true"
 	maximizable="true"
 	onClose="@command('closeDialog')">
 	
 	
 	<vlayout>
+		<separator height="5px"/>
 		
-		<checkbox id="createNewRole_chk" 
-		    	label="Create New Role"
-	            checked="@bind(vm.createNewRole)" 
-	            onCheck="newRoleName.setVisible(self.checked); existingRoleList.setVisible(! self.checked)"/>
-	
-		<hlayout>
+		<hbox>
+			<label value="Create New Role"/>
 			
-			<listbox id="existingRoleList" model="@load(vm.allRole)" selectedItem="@bind(vm.selectedRole)" mold="select" onSelect="@command('selectRole')">
+			<checkbox id="createNewRole_chk" 
+		    	checked="@bind(vm.createNewRole)" 
+	            onCheck="newRoleName.setDisabled(! self.checked); existingRoleList.setDisabled(self.checked)"/>
+			
+			<textbox id="newRoleName" value="@bind(vm.newRoleName)" disabled="true"/>
+		</hbox>	
+		
+		<label value=" - Or -"/>
+		
+		<separator height="5px"/>
+		<hbox>
+			
+			<label value="Edit Existing Role"/>
+			
+			<listbox id="existingRoleList"
+				 model="@load(vm.allRole)" 
+				 selectedItem="@bind(vm.selectedRole)" 
+				 mold="select" 
+				 onSelect="@command('selectRole')">
 		         <template name="model">
 		             <listitem  label="@load(each.name)" />
 		         </template>
 		    </listbox>
-       
-		    <textbox id="newRoleName" value="@bind(vm.newRoleName)" visible="false"/>
 		    
-	    </hlayout>
+		</hbox>
 	    
-		<label value="Drag to right to select Module"/>
+	    <separator height="10px"/>
+	    
+		<tabbox>
+			<tabs>
+				<tab label="Drag to right to select Module"/>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+				
+					<hlayout>
+						<vlayout>
+							<label value="available item"/>
+							<listbox width="250px" height="250px"
+								model="@bind(vm.availableModule)"
+								droppable="true"
+								onDrop="@command('removeModule', module=event.dragged.attributes.item)">
+								<template name="model">
+									<listitem draggable="true" droppable="true"
+										label="@load(each.name)"
+										attributes.item="@load(each)"
+										onDrop="@command('removeModule', module=event.dragged.attributes.item)"/>
+								</template>
+							</listbox>
+						</vlayout>
+						
+						<separator width="10px"/>
+						
+						<vlayout>
+							<label value="selected item"/>
+							<listbox width="250px" height="250px" 
+								model="@bind(vm.selectedModule)"
+								droppable="true"
+								onDrop="@command('selectModule', module=event.dragged.attributes.item)">
+								<template name="model">
+									<listitem draggable="true" droppable="true"
+										label="@load(each.name)" attributes.item="@load(each)"
+										onDrop="@command('selectModule', module=event.dragged.attributes.item)"/>
+								</template>
+							</listbox>
+						</vlayout>
+					</hlayout>
+					
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
 		
-		<hlayout>
-			<vlayout>
-				<label value="available item"/>
-				<listbox width="250px" height="250px"
-					model="@bind(vm.availableModule)"
-					droppable="true"
-					onDrop="@command('removeModule', module=event.dragged.attributes.item)">
-					<template name="model">
-						<listitem draggable="true" droppable="true"
-							label="@load(each.name)"
-							attributes.item="@load(each)"
-							onDrop="@command('removeModule', module=event.dragged.attributes.item)"/>
-					</template>
-				</listbox>
-			</vlayout>
-			<vbox vflex="1" pack="middle" width="20px">
-			
-			</vbox>
-			<vlayout>
-				<label value="selected item"/>
-				<listbox width="250px" height="250px" 
-					model="@bind(vm.selectedModule)"
-					droppable="true"
-					onDrop="@command('selectModule', module=event.dragged.attributes.item)">
-					<template name="model">
-						<listitem draggable="true" droppable="true"
-							label="@load(each.name)" attributes.item="@load(each)"
-							onDrop="@command('selectModule', module=event.dragged.attributes.item)"/>
-					</template>
-				</listbox>
-			</vlayout>
-		</hlayout>
-		<button label="Save Module" onClick="@command('saveRoleModule')"/>
+		<hbox pack="center" hflex="3" style="padding:5px">
+			<button label="Save Role" 
+					onClick="@command('saveRoleModule')"
+					sclass="btn-green"
+					width="80px"/>
+					
+			<separator width="3px"/>
+					
+			<button label="Cancel" 
+					onClick="roleConfigurationDialog.detach();"
+					sclass="btn-red"
+					width="80px"/>
+		</hbox>
+		
 	</vlayout>
 
 </window>

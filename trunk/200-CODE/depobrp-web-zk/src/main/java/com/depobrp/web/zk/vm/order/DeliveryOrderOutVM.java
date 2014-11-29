@@ -24,14 +24,15 @@ import com.depobrp.commons.util.ISO6346Utils;
 import com.depobrp.model.master.Consignee;
 import com.depobrp.model.master.MLO;
 import com.depobrp.model.master.Vessel;
-import com.depobrp.model.order.DeliveryOrderIN;
+import com.depobrp.model.order.DeliveryOrderOUT;
 import com.depobrp.model.order.FreightContainer;
-import com.depobrp.service.order.DeliveryOrderINService;
+import com.depobrp.service.order.DeliveryOrderOUTService;
+import com.depobrp.service.order.FreightContainerService;
 import com.depobrp.web.zk.common.BaseController;
 
-@Component("DeliveryOrderInVM")
+@Component("DeliveryOrderOutVM")
 @Scope("prototype")
-public class DeliveryOrderInVM extends BaseController {
+public class DeliveryOrderOutVM extends BaseController {
 
 	private List<MLO> mloList;
 	
@@ -43,7 +44,7 @@ public class DeliveryOrderInVM extends BaseController {
 	
 	private FreightContainer currentContainer;
 	
-	private DeliveryOrderIN doIN = new DeliveryOrderIN();
+	private DeliveryOrderOUT doOUT = new DeliveryOrderOUT();
 	
 	private String addContainerErrorMessage;
 	
@@ -51,9 +52,15 @@ public class DeliveryOrderInVM extends BaseController {
 	
 	private ListModelList<FreightContainer.Type> containerTypeList;
 	
+	private List<FreightContainer> autocompleteContainerList;
+	
 	@Autowired
-	@Qualifier("deliveryOrderINService")
-	private DeliveryOrderINService service;
+	@Qualifier("deliveryOrderOUTService")
+	private DeliveryOrderOUTService service;
+
+	@Autowired
+	@Qualifier("freightContainerService")
+	private FreightContainerService freightContainerService;
 	
 	@PostConstruct
 	public void init(){
@@ -67,18 +74,18 @@ public class DeliveryOrderInVM extends BaseController {
 		containerTypeList = new ListModelList<FreightContainer.Type>(FreightContainer.Type.values());
 	}
 	
-	@GlobalCommand("resetDeliveryOrderINPage")
-	@NotifyChange({"doIN", "containerList", "currentContainer"})
+	@GlobalCommand("resetDeliveryOrderOUTPage")
+	@NotifyChange({"doOUT", "containerList", "currentContainer"})
 	public void resetDeliveryOrderINPage(){
-		this.doIN = new DeliveryOrderIN();
+		this.doOUT = new DeliveryOrderOUT();
 		containerList = new ArrayList<FreightContainer>();
 		currentContainer = new FreightContainer();
 	}
 	
 	@Command
-	public void saveDeliveryOrderIN(){
-		doIN.setCreatedBy(super.getUsername());
-		doIN.setContainers(new HashSet<FreightContainer>(containerList));
+	public void saveDeliveryOrderOUT(){
+		doOUT.setCreatedBy(super.getUsername());
+		doOUT.setContainers(new HashSet<FreightContainer>(containerList));
 		if(CollectionUtils.isEmpty(this.containerList)){
 			alert("Please Insert Container Number");
 			return;
@@ -91,8 +98,8 @@ public class DeliveryOrderInVM extends BaseController {
 		return new EventListener<Event>() {
 			@Override
 			public void onEvent(Event event) throws Exception {
-				service.saveDoInWithContainer(doIN);
-				BindUtils.postGlobalCommand(null, null,"resetDeliveryOrderINPage", null);
+				service.saveDoOutWithContainer(doOUT);
+				BindUtils.postGlobalCommand(null, null,"resetDeliveryOrderOUTPage", null);
 				info("Successfully saved");
 			}
 		};
@@ -117,7 +124,7 @@ public class DeliveryOrderInVM extends BaseController {
 		}
 		
 		int cd = ISO6346Utils.calculateCheckDigit(currentContainer.getContainerNum());
-		if(currentContainer.getCheckDigit() == null || cd != currentContainer.getCheckDigit()){
+		if(currentContainer.getCheckDigit()== null || cd != currentContainer.getCheckDigit()){
 			
 			addContainerErrorMessage = "Correct CD is '"+ cd +"'";
 			currentContainer.setCheckDigit(cd);
@@ -149,8 +156,18 @@ public class DeliveryOrderInVM extends BaseController {
 		}
 		return false;
 	}
-
 	
+	@Command
+	@NotifyChange("autocompleteContainerList")
+	public void searchContainerNumber(@BindingParam("autocomplete") String autocomplete){
+		autocompleteContainerList = freightContainerService.getFreightContainerByName(autocomplete);
+	}
+
+	@Command
+	@NotifyChange("containerList")
+	public void lookupContainer(@BindingParam("autocomplete") String autocomplete){
+		System.out.println(autocomplete);
+	}
 
 	public List<MLO> getMloList() {
 		return mloList;
@@ -175,13 +192,13 @@ public class DeliveryOrderInVM extends BaseController {
 	public void setVesselList(List<Vessel> vesselList) {
 		this.vesselList = vesselList;
 	}
-	
-	public DeliveryOrderIN getDoIN() {
-		return doIN;
+
+	public DeliveryOrderOUT getDoOUT() {
+		return doOUT;
 	}
 
-	public void setDoIN(DeliveryOrderIN doIN) {
-		this.doIN = doIN;
+	public void setDoOUT(DeliveryOrderOUT doOUT) {
+		this.doOUT = doOUT;
 	}
 
 	public String getAddContainerErrorMessage() {
@@ -224,6 +241,15 @@ public class DeliveryOrderInVM extends BaseController {
 	public void setContainerTypeList(
 			ListModelList<FreightContainer.Type> containerTypeList) {
 		this.containerTypeList = containerTypeList;
+	}
+
+	public List<FreightContainer> getAutocompleteContainerList() {
+		return autocompleteContainerList;
+	}
+
+	public void setAutocompleteContainerList(
+			List<FreightContainer> autocompleteContainerList) {
+		this.autocompleteContainerList = autocompleteContainerList;
 	}
 
 }

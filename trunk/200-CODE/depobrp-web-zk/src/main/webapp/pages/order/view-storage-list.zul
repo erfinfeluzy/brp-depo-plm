@@ -3,21 +3,21 @@
 <?taglib uri="http://www.zkoss.org/zkspring/security" prefix="sec" ?>
 <zk>
 	<window apply="org.zkoss.bind.BindComposer" border="none"
-		width="100%" viewModel="@id('vm') @init(MoveINListVM)" hflex="1"
-		vflex="1" contentStyle="overflow:auto" if="${sec:isAllGranted('move-in-list')}">
+		width="100%" viewModel="@id('vm') @init(ViewStorageListVM)" hflex="1"
+		vflex="1" contentStyle="overflow:auto" if="${sec:isAllGranted('view-storage-list')}">
 		
 		<vbox width="100%" hflex="1" vflex="1">
 		
 		<listbox height="99%"
 			model="@load(vm.containerList.contents)"
-			emptyMessage="No Data Available" >
+			emptyMessage="No Data Available" hflex="true">
 
 			<auxhead>
-				<auxheader label="Move IN List" colspan="8" />
+				<auxheader label="Storage List" colspan="9" />
 			</auxhead>
 			
 			<auxhead>
-				<auxheader colspan="8" style="background-color:#ffffff">
+				<auxheader colspan="9" style="background-color:#ffffff">
 				<vbox>
 				<hbox>
 					<label value="Order Date" />
@@ -56,17 +56,19 @@
 						</template>
 					</combobox>
 					
-					<separator width="10px"/>
-					
-					<button label="Search" width="80px" sclass="btn-green" onClick="@command('lookupContainer')"/>
-					<button label="Reset"  width="80px" sclass="btn-red" onClick="@command('reset')"/>
+					<button label="Search" 
+						width="80px" sclass="btn-green" 
+						onClick="@command('lookupContainer')"/>
+					<button label="Reset" 
+						width="80px" sclass="btn-red"
+						onClick="@command('reset')"/>
 				</hbox>
 				</vbox>
 				</auxheader>
 			</auxhead>
 
 			<listhead menupopup="auto">
-				<listheader label="Action" width="80px"/>
+				<listheader label="Action" width="50px"/>
 				<listheader label="Container Num" width="125px"/>
 				<listheader label="Owner" width="150px"/>
 				<listheader label="Ex-Vessel" width="150px"/>
@@ -74,16 +76,16 @@
 				<listheader label="Type"  width="50px"/>
 				<listheader label="Status" width="100px"/>
 				<listheader label="DO Date" />
+				<listheader label="Date IN" />
 			</listhead>
 
 			<template name="model">
 				<listitem context="viewPopup">
 					<listcell>
 						<hbox>
-							<button label="MOVE-IN" tooltiptext="MOVE-IN"
-								sclass="font-small btn-blue"
-								onClick="@command('prepareMoveIN', selectedContainer = each)"/>
-							
+							<image src="/imgs/edit.png"
+								tooltiptext="Move IN" 
+								onClick="@command('prepareMoveOUT', selectedContainer = each)"/>
 						</hbox>
 					</listcell>
 					<listcell>
@@ -98,7 +100,7 @@
 					<listcell>
 					<hbox>
 						<label value="@bind(each.doIN.exVessel.name)" />
-						<label value="#" />
+						<label value="V." />
 						<label value="@bind(each.doIN.exVesselVoyageNo)" />
 					</hbox>
 					</listcell>
@@ -106,14 +108,13 @@
 					<listcell label="@bind(each.type)" />
 					<listcell label="@bind(each.orderStatus)" />
 					<listcell label="${c:formatDate(each.doIN.deliveryDate, 'dd-MMM-yyyy')}" />
+					<listcell label="${c:formatDate(each.moveINDate, 'dd-MMM-yyyy HH:mm')}" />
 				</listitem>
 			</template>
 		</listbox>
 		<paging pageSize="@load(vm.maxRowPerPage)"
 				activePage="@save(vm.activePage)"
-				totalSize="@load(vm.containerList.totalRow)" />
-		
-
+				totalSize="@load(vm.containerList.totalRow)"/>
 		</vbox>
 	</window>
 </zk>
