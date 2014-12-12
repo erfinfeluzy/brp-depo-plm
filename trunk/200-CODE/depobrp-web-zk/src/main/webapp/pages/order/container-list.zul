@@ -1,0 +1,135 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<?taglib uri="http://www.zkoss.org/zkspring/security" prefix="sec" ?>
+<zk>
+	<window apply="org.zkoss.bind.BindComposer" border="none"
+		width="100%" viewModel="@id('vm') @init(ContainerListVM)" hflex="1"
+		vflex="1" contentStyle="overflow:auto" if="${sec:isAllGranted('container-list')}">
+		
+		<vbox width="100%" hflex="1" vflex="1">
+		
+		<listbox height="99%"
+			model="@load(vm.containerList.contents)"
+			emptyMessage="No Data Available" >
+
+			<auxhead>
+				<auxheader label="Container List" colspan="9" />
+			</auxhead>
+			
+			<auxhead>
+				<auxheader colspan="9" style="background-color:#ffffff">
+				<vbox>
+				<hbox>
+					<label value="Order Date" />
+					<datebox value="@bind(vm.fromDate)"/>
+					<label value="to" />
+					<datebox value="@bind(vm.toDate)"/>
+				</hbox>
+				<hbox>
+					<label value="Container #" />
+					<combobox value="@bind(vm.filter.containerNum)"
+						onChanging="@command('searchContainerNumber', autocomplete = event.value)" 
+						model="@load(vm.autocompleteContainerList)" autocomplete="true" autodrop="true" 
+						onOK="@command('lookupContainer')">
+						<template name="model">
+							<comboitem label="@load(each.containerNum)" 
+									value="@load(each.containerNum)" 
+									description="@load(each.orderStatus)"
+									image="/imgs/add.png">
+							</comboitem>
+						</template>
+					</combobox>
+					
+					<label value="Owner" />
+					<combobox width="130px" 
+						model="@load(vm.mloList)" 
+						selectedItem="@bind(vm.filter.doIN.owner)" >
+						<template name="model">
+							<comboitem label="@load(each.name)"/>
+						</template>
+					</combobox>
+					
+					<label value="Ex-Vessel" />
+					
+					<combobox width="130px" 
+						model="@load(vm.vesselList)" 
+						selectedItem="@bind(vm.filter.doIN.exVessel)">
+						<template name="model">
+							<comboitem label="@load(each.name)"/>
+						</template>
+					</combobox>
+					
+					<separator width="10px"/>
+					
+					<button label="Search" width="80px" sclass="btn-green" onClick="@command('lookupContainer')"/>
+					<button label="Reset"  width="80px" sclass="btn-red" onClick="@command('reset')"/>
+				</hbox>
+				</vbox>
+				</auxheader>
+			</auxhead>
+
+			<listhead menupopup="auto">
+				<listheader label="Action" width="80px"/>
+				<listheader label="Container Num" width="125px"/>
+				<listheader label="Owner" width="150px"/>
+				<listheader label="Ex-Vessel" width="150px"/>
+				<listheader label="Size"  width="50px"/>
+				<listheader label="Type"  width="50px"/>
+				<listheader label="Status" width="100px"/>
+				<listheader label="DO Date" />
+				<listheader label="Day on Storage" />
+			</listhead>
+
+			<template name="model">
+				<listitem popup="detail_${each.id}">
+					<listcell>
+						<hbox>
+							<button label="MOVE-IN" tooltiptext="MOVE-IN"
+								if="${each.orderStatus.description == 'DO_IN'}"
+								sclass="font-small btn-blue"
+								onClick="@command('prepareMoveIN', selectedContainer = each)"/>
+								
+							<button label="MOVE-OUT" tooltiptext="MOVE-OUT"
+								if="${each.orderStatus.description == 'DO_OUT'}"
+								sclass="font-small btn-red"
+								onClick="@command('prepareMoveIN', selectedContainer = each)"/>
+						</hbox>
+						
+						<popup id="detail_${each.id}">
+                            <include src="/widgets/modal/container-detail.zul"
+                                containerItem="${each}" />
+                        </popup>
+                        
+					</listcell>
+					<listcell>
+					<hbox>
+						<label value="@bind(each.containerNum)" />
+						<label value="-" />
+						<label value="@bind(each.checkDigit)" />
+					</hbox>
+					</listcell>
+					
+					<listcell label="@bind(each.doIN.owner.name)" />
+					<listcell>
+					<hbox>
+						<label value="@bind(each.doIN.exVessel.name)" />
+						<label value="#" />
+						<label value="@bind(each.doIN.exVesselVoyageNo)" />
+					</hbox>
+					</listcell>
+					<listcell label="@bind(each.size.description)" />
+					<listcell label="@bind(each.type)" />
+					<listcell label="@bind(each.orderStatus)" />
+					<listcell label="${c:formatDate(each.doIN.deliveryDate, 'dd-MMM-yyyy')}" />
+					<listcell label="@bind(each.totalDayInStorage)" />
+				</listitem>
+			</template>
+		</listbox>
+		<paging pageSize="@load(vm.maxRowPerPage)"
+				activePage="@save(vm.activePage)"
+				totalSize="@load(vm.containerList.totalRow)" />
+		
+
+		</vbox>
+	</window>
+</zk>

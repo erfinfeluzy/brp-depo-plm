@@ -1,0 +1,50 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<zk>
+<window id="mloDailyReport"
+	apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init(MloDailyReportVM)"
+	title="MLO Daily Report"
+	border="normal"
+	width="550px"
+	height="200px"
+	sizable="true"
+	closable="true"
+	maximizable="true">
+	
+	<div>
+	<vbox>
+	
+	<label value="Generate Daily Report"/>
+	
+	<space height="10px"/>
+	
+	<hbox>
+		<label value="Owner" />
+		
+		<combobox width="130px" 
+			model="@load(vm.mloList)" 
+			selectedItem="@bind(vm.selectedMlo)">
+			<template name="model">
+				<comboitem label="@load(each.name)"/>
+			</template>
+		</combobox>
+		
+		<label value="Date"/>
+		
+		<datebox constraint="no future" value="@bind(vm.reportDate)"/>
+		
+		<button label="Download Excel" 
+				sclass="btn-green" 
+				onClick="@command('showReport')" />
+				
+		<button label="Cancel" 
+				sclass="btn-red"  
+				onClick="mloDailyReport.detach()"/>
+		
+	</hbox>
+	
+	</vbox>
+	</div>
+</window>
+</zk>

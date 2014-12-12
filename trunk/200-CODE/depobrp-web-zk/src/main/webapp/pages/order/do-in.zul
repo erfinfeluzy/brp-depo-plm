@@ -11,7 +11,8 @@
 			}
 		</style>
 		
-		<grid sclass="fgrid">
+		
+		<grid sclass="fgrid" hflex="true">
 			
 			<auxhead>
 				<auxheader label="Delivery Order IN" colspan="4"/>

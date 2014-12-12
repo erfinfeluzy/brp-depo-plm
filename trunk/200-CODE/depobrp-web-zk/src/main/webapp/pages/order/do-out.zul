@@ -18,9 +18,9 @@
 			</auxhead>
 
 			<columns>
-				<column width="100px" valign="top" align="right"  sclass="fgrid"/>
-				<column valign="top" sclass="fgrid"/>
-				<column width="100px" valign="top" align="left"  sclass="fgrid"/>
+				<column width="100px" sclass="fgrid" valign="top" align="right" />
+				<column valign="top"  sclass="fgrid"/>
+				<column width="100px" sclass="fgrid" valign="top" align="left"/>
 				<column valign="top"  sclass="fgrid"/>
 			</columns>
 			
@@ -31,55 +31,24 @@
 					<textbox value="@bind(vm.doOUT.doNumber)" constraint="no empty" tabindex="1"/>
 					
 					
-					<cell rowspan="7" colspan="2" style="background-color:#ffffff">
+					<cell rowspan="7" colspan="2" sclass="fgrid">
 					
-					<tabbox hflex="2">
-						<tabs>
-							<tab label="Add Container"/>
-						</tabs>
-						<tabpanels>
-							<tabpanel>
-								<vbox hflex="2">
+					<groupbox mold="3d">
+						<caption label="Add Container"/>
+					
+						<vbox hflex="2">
 						
 						<hbox>
 							<label value="Num"/>
-							<textbox value="@bind(vm.currentContainer.containerNum)" />
 							
 							<combobox value="@bind(vm.currentContainer.containerNum)"
 								onChanging="@command('searchContainerNumber', autocomplete = event.value)"
-								model="@load(vm.autocompleteContainerList)" autocomplete="true" autodrop="true" 
-								selectedItem="@bind(vm.currentContainer)">
+								model="@load(vm.autocompleteContainerList)" 
+								autocomplete="true" autodrop="true" 
+								selectedItem="@bind(vm.currentContainer)" readonly="false">
 								<template name="model">
 									<comboitem label="@load(each.containerNum)" value="@load(each.containerNum)">
 									</comboitem>
-								</template>
-							</combobox>
-							
-							<label value="CD"/>
-							<intbox width="25px" 
-								constraint="no negative,no empty" 
-								maxlength="1"
-								value="@bind(vm.currentContainer.checkDigit)"/>
-							
-						</hbox>
-						<hbox align="center" hflex="1">
-							<label value="Size"/>
-							<combobox width="100px"
-								readonly="true" 
-								model="@load(vm.containerSizeList)" 
-								selectedItem="@bind(vm.currentContainer.size)">
-								<template name="model">
-									<comboitem label="@load(each.description)"/>
-								</template>
-							</combobox>
-							
-							
-							<label value="Type" />
-							<combobox width="100px" readonly="true"
-								model="@load(vm.containerTypeList)" 
-								selectedItem="@bind(vm.currentContainer.type)">
-								<template name="model">
-									<comboitem label="@load(each)"/>
 								</template>
 							</combobox>
 							
@@ -112,9 +81,7 @@
 						</listbox>
 						
 					</vbox>
-							</tabpanel>
-						</tabpanels>
-					</tabbox>
+					</groupbox>
 					
 				
 					</cell>
@@ -173,7 +140,7 @@
 				</row>
 				
 				<row>
-					<label value="Note IN"  />
+					<label value="Note OUT"  />
 					<textbox height="60px" width="80%" multiline="true" 
 						value="@bind(vm.doOUT.noteIn)"/>
 				</row>

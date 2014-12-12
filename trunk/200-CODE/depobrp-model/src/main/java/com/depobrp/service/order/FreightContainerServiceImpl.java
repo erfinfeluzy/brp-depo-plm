@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.depobrp.model.order.FreightContainer;
 import com.depobrp.model.order.FreightContainer.OrderStatus;
+import com.depobrp.model.report.MLODailyReport;
 import com.depobrp.service.common.ObjectServiceImpl;
 import com.depobrp.service.common.TablePager;
 
@@ -61,6 +62,9 @@ public class FreightContainerServiceImpl
 				" left join fetch fc.doIN " +
 				" left join fetch fc.doIN.owner " +
 				" left join fetch fc.doIN.exVessel " +
+				" left join fetch fc.doOUT " +
+				" left join fetch fc.doOUT.owner " +
+				" left join fetch fc.doOUT.nextVessel " +
 				" where 1=1 ";
 		
 		String hqlCount = "select count(fc.id) " +
@@ -124,6 +128,74 @@ public class FreightContainerServiceImpl
 		
 		return super.getFromHql(hql, new Object[]{(likeFilter)}, 10);
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FreightContainer> getFreightContainerByNameStatus(String filter, OrderStatus status){
+		
+		if(StringUtils.isEmpty(filter) || filter.length() < 3)
+			return null;
+		
+		String hql = "from FreightContainer fc where fc.containerNum like ? and orderStatus = ?";
+		
+		String likeFilter = filter + "%";
+		
+		return super.getFromHql(hql, new Object[]{likeFilter, status}, 10);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public MLODailyReport getDailyReportData(Long mloId, Date reportDate) {
+
+		String hql = " from FreightContainer fc " +
+				" left join fetch fc.doIN din " +
+				" left join fetch din.owner iow " +
+				" left join fetch din.exVessel ev " +
+				" left join fetch din.consignee con " +
+				" left join fetch fc.doOUT out " +
+				" left join fetch out.owner oow " +
+				" left join fetch out.nextVessel nv " +
+				" where 1=1 " +
+				" and iow.id= ? ";
+		
+		String hqlMoveIn = hql + 
+				" and fc.orderStatus= ? " +
+				" and year(fc.moveINDate) = year(?) "+
+				" and month(fc.moveINDate) = month(?) "+
+				" and day(fc.moveINDate) = day(?) " ;
+		List<FreightContainer> moveInList = super.getFromHql(hqlMoveIn, new Object[]{mloId, OrderStatus.ON_STORAGE, reportDate, reportDate, reportDate});
+		System.out.println("movein list size: " + moveInList.size());
+		
+		String hqlMoveOut = hql + 
+				" and fc.orderStatus= ? " +
+				" and year(fc.moveOUTDate) = year(?) "+
+				" and month(fc.moveOUTDate) = month(?) "+
+				" and day(fc.moveOUTDate) = day(?) " ;;
+		List<FreightContainer> moveOutList = super.getFromHql(hqlMoveOut, new Object[]{mloId, OrderStatus.MOVE_OUT, reportDate, reportDate, reportDate});
+		System.out.println("move out size: " + moveOutList.size());
+		
+		String hqlOnStorage = hql + " and fc.orderStatus=? ";
+		List<FreightContainer> onStorageList = super.getFromHql(hqlOnStorage, new Object[]{mloId, OrderStatus.ON_STORAGE});
+		System.out.println("on storage size: " + onStorageList.size());
+		
+		MLODailyReport report = new MLODailyReport(moveInList, moveOutList, onStorageList);
+		
+		return report;
+	}
+	
+	public static void main(String[] args) {
+		String hql = " from FreightContainer fc " +
+				" left join fetch fc.doIN din " +
+				" left join fetch din.owner iow " +
+				" left join fetch din.exVessel ev " +
+				" left join fetch fc.doOUT out " +
+				" left join fetch out.owner oow " +
+				" left join fetch out.nextVessel nv " +
+				" where 1=1 " +
+				" and iow.id= ? ";
+		
+		System.out.println(hql);
 	}
 
 }

@@ -49,4 +49,12 @@ public class TopMenuController extends BaseController {
 		popupWin.doModal();
 	}
 	
+	@Command
+	public void mloDailyReport(){
+		Window popupWin = (Window) Executions.createComponents(
+				"/widgets/modal/mlo-daily-report.zul", null, null);
+		
+		popupWin.doModal();
+	}
+	
 }

@@ -13,7 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.depobrp.commons.util.DateUtils;
 import com.depobrp.model.common.Auditable;
 
 @Entity
@@ -97,7 +99,8 @@ public class FreightContainer extends Auditable {
 	@Column(name = "MOVE_OUT_DATE")
 	private Date moveOUTDate;
 	
-	
+	@Transient
+	private Integer totalDayInStorage; 
 
 	public enum Type {
 		GP, HC
@@ -140,7 +143,21 @@ public class FreightContainer extends Auditable {
 	}
 	
 	public enum OrderStatus {
-		DO_IN, ON_STORAGE, DO_OUT, MOVE_OUT
+		DO_IN("DO_IN"), ON_STORAGE("ON_STORAGE"), DO_OUT("DO_OUT"), MOVE_OUT("MOVE_OUT");
+		
+		OrderStatus(String desc){
+			this.description = desc;
+		}
+		
+		private String description;
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
 	}
 	
 	public enum Size {
@@ -264,6 +281,24 @@ public class FreightContainer extends Auditable {
 
 	public void setDoOUT(DeliveryOrderOUT doOUT) {
 		this.doOUT = doOUT;
+	}
+
+	public Integer getTotalDayInStorage() {
+		
+		if(this.orderStatus == null || this.orderStatus == OrderStatus.DO_IN ) 
+			return 0;
+		
+		else if(this.orderStatus == OrderStatus.ON_STORAGE || this.orderStatus == OrderStatus.DO_OUT )
+			return DateUtils.totalDiffDay(this.moveINDate, new Date());
+		
+		else if(this.orderStatus == OrderStatus.MOVE_OUT )
+			return DateUtils.totalDiffDay(this.moveINDate, this.moveOUTDate);
+		
+		return 0;
+	}
+
+	public void setTotalDayInStorage(Integer totalDayInStorage) {
+		this.totalDayInStorage = totalDayInStorage;
 	}
 
 }

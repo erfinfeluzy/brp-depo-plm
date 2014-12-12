@@ -77,6 +77,12 @@
 			<version>2.4</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.depobrp</groupId>
+			<artifactId>depobrp-commons</artifactId>
+			<version>1.0.0-BUILD-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

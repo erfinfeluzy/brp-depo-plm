@@ -26,6 +26,7 @@ import com.depobrp.model.master.MLO;
 import com.depobrp.model.master.Vessel;
 import com.depobrp.model.order.DeliveryOrderOUT;
 import com.depobrp.model.order.FreightContainer;
+import com.depobrp.model.order.FreightContainer.OrderStatus;
 import com.depobrp.service.order.DeliveryOrderOUTService;
 import com.depobrp.service.order.FreightContainerService;
 import com.depobrp.web.zk.common.BaseController;
@@ -86,8 +87,9 @@ public class DeliveryOrderOutVM extends BaseController {
 	public void saveDeliveryOrderOUT(){
 		doOUT.setCreatedBy(super.getUsername());
 		doOUT.setContainers(new HashSet<FreightContainer>(containerList));
+		
 		if(CollectionUtils.isEmpty(this.containerList)){
-			alert("Please Insert Container Number");
+			alert("Please Insert at least one Container");
 			return;
 		}
 			
@@ -160,14 +162,11 @@ public class DeliveryOrderOutVM extends BaseController {
 	@Command
 	@NotifyChange("autocompleteContainerList")
 	public void searchContainerNumber(@BindingParam("autocomplete") String autocomplete){
-		autocompleteContainerList = freightContainerService.getFreightContainerByName(autocomplete);
+		
+		//get container list that have status on storage
+		autocompleteContainerList = freightContainerService.getFreightContainerByNameStatus(autocomplete, OrderStatus.ON_STORAGE);
 	}
 
-	@Command
-	@NotifyChange("containerList")
-	public void lookupContainer(@BindingParam("autocomplete") String autocomplete){
-		System.out.println(autocomplete);
-	}
 
 	public List<MLO> getMloList() {
 		return mloList;

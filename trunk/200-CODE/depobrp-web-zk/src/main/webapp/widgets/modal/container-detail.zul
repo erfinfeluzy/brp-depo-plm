@@ -1,0 +1,61 @@
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<vlayout width="300px">
+	<hbox>
+	    <label 
+	    	value="${containerItem.containerNum}${containerItem.checkDigit} (${containerItem.doIN.owner.name})" 
+	    	style="font-size: 14px; font-weight: bold;" />
+	  
+    </hbox>
+    <grid>
+        <rows>
+            <row height="24px">
+                <hbox width="50px">
+                	Status:
+                </hbox>
+                <label value="${containerItem.orderStatus}" />
+            </row>
+            
+            <row height="24px">
+                Size / Type:
+                <label value="${containerItem.size.description} / ${containerItem.type}" />
+            </row>
+            
+            <row height="24px">
+                Ex-Vessel:
+                <hbox>
+                	<label value="${containerItem.doIN.exVessel.name}" />
+                	<label value="-" />
+                	<label value="${containerItem.doIN.exVesselVoyageNo}" />
+                </hbox>
+            </row>
+            
+            <row height="24px">
+                DO-IN Date
+                <label value="${c:formatDate(containerItem.doIN.deliveryDate, 'dd-MMM-yyyy HH:mm a')} " />
+            </row>
+            
+             <row height="24px" if="${containerItem.moveINDate != null}">
+                MOVE-IN Date
+                <label value="${c:formatDate(containerItem.moveINDate, 'dd-MMM-yyyy HH:mm a')} " />
+            </row>
+            
+            <row height="24px" if="${containerItem.doOUT != null}" >
+                DO-OUT Date
+                <label value="${c:formatDate(containerItem.doOUT.deliveryDate, 'dd-MMM-yyyy HH:mm a')} " />
+            </row>
+            
+            <row height="24px" if="${containerItem.moveOUTDate != null}">
+                MOVE-OUT Date
+                <label value="${c:formatDate(containerItem.moveOUTDate, 'dd-MMM-yyyy HH:mm a')} " />
+            </row>
+            
+            <row height="24px">
+                Storage Days
+                <label value="${containerItem.totalDayInStorage} days" />
+            </row>
+            
+            
+            
+        </rows>
+    </grid>
+</vlayout>

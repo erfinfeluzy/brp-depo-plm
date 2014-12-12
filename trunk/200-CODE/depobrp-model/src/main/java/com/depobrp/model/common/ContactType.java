@@ -36,7 +36,8 @@ public abstract class ContactType
 	@Column(name = "TAX_PAYER_ID_NUM", length = 32)
 	private String taxPayerIdNum;
 	
-	
+	@Column(name = "COMP_SHORT_CODE", length = 32)
+	private String companyShortCode;
 	
 
 	public String getTaxPayerIdNum() {
@@ -101,5 +102,13 @@ public abstract class ContactType
 
 	public void setFax(String fax) {
 		this.fax = fax;
+	}
+
+	public String getCompanyShortCode() {
+		return companyShortCode;
+	}
+
+	public void setCompanyShortCode(String companyShortCode) {
+		this.companyShortCode = companyShortCode;
 	}
 }

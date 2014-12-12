@@ -29,7 +29,7 @@ public class DeliveryOrderOUTServiceImpl
 		super.save(deliveryOrderOUT);
 		
 		for (FreightContainer freightContainer : containerList) {
-			freightContainer.setOrderStatus(OrderStatus.DO_IN);
+			freightContainer.setOrderStatus(OrderStatus.DO_OUT);
 			freightContainer.setCreatedDate(trxDate);
 			freightContainer.setDoOUT(deliveryOrderOUT);
 			

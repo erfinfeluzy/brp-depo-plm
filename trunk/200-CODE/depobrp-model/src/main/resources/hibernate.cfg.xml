@@ -11,7 +11,7 @@
   <mapping class="com.depobrp.model.master.Vessel"/>
   <mapping class="com.depobrp.model.master.Consignee"/>
   <mapping class="com.depobrp.model.master.Shiper"/>
-  <mapping class="com.depobrp.model.master.EMKL"/>
+
   
   <mapping class="com.depobrp.model.user.User"/>
   <mapping class="com.depobrp.model.user.UserActivity"/>

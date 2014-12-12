@@ -5,10 +5,10 @@ public enum Currency {
 
 	IDR("Rp",	"IDR", Language.id_ID, "rupiah"), 
 	USD("$",	"USD", Language.en_US, "dollar"),
-	JPY("´",	"JPY", Language.en_US, "yen"),
+	JPY("Y",	"JPY", Language.en_US, "yen"),
 	CNY("CNY",	"CNY", Language.en_US, "yuan"),
-	GBP("£",	"GBP", Language.en_US, "poundterling"),
-	EUR("Û",	"EUR", Language.en_US, "euro");
+	GBP("GBP",	"GBP", Language.en_US, "poundterling"),
+	EUR("EUR",	"EUR", Language.en_US, "euro");
 
 	private Currency(String symbol, String code, Language language, String speech) {
 		this.symbol = symbol;

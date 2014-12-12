@@ -10,7 +10,7 @@
 		        </tabbox>
     		</center>
     		
-    		<south height="170px" border="none" 
+    		<south height="170px" border="none" open="false"
         		collapsible="true" splittable="true" autoscroll="true" title="Calendar">
     			<calendar id="cal" width="98%" />
     		</south>
