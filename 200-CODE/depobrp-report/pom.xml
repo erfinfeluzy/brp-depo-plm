@@ -15,9 +15,17 @@
 		<jasperreport.version>5.2.0</jasperreport.version>
 		<commons.dbcp.version>1.4</commons.dbcp.version>
 		<mysql.connector.version>5.1.24</mysql.connector.version>
+		
 	</properties>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>com.depobrp</groupId>
+			<artifactId>depobrp-model</artifactId>
+			<version>1.0.0-BUILD-SNAPSHOT</version>
+		</dependency>
+	
 		<!-- JASPER -->
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
@@ -76,6 +84,13 @@
 			<version>${org.springframework-version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.8</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

@@ -20,7 +20,6 @@ import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
-import org.zkoss.zul.Toolbarbutton;
 
 import com.depobrp.model.user.Module;
 import com.depobrp.model.user.Page;
@@ -69,13 +68,12 @@ public class EastSidebarAjaxbasedController extends SelectorComposer<Component>{
 			lbox.setParent(pc);
 			lbox.setOddRowSclass("non-odd");
 			lbox.setStyle("border: none; border-color: white;");
+			lbox.setWidth("99%");
 			
 			for (Page page : module.getPages()) {
 				
-//				Toolbarbutton tb = constructSidebarToolbarButton(page.getName(),page.getLabel(),page.getIconUri(),page.getUri());
-//				vbox.appendChild(tb);
-				
 				Listitem tb = constructListItem(page.getName(),page.getLabel(),page.getIconUri(),page.getUri());
+				
 				lbox.appendChild(tb);
 				
 				String currentPage = (String) Sessions.getCurrent().getAttribute("CURRENT_PAGE");
@@ -87,45 +85,7 @@ public class EastSidebarAjaxbasedController extends SelectorComposer<Component>{
 			}
 		}
 	}
-	
-	private Toolbarbutton constructSidebarToolbarButton(final String name,String label, String imageSrc, final String locationUri) {
-		
-		//construct component and hierarchy
-		Toolbarbutton tb = new Toolbarbutton();
-		
-		tb.setImage(imageSrc);
-		tb.setLabel(label);
 
-		
-		//new and register listener for events
-		EventListener<Event> onActionListener = new SerializableEventListener<Event>(){
-			private static final long serialVersionUID = 1L;
-
-			public void onEvent(Event event) throws Exception {
-				//redirect current url to new location
-				if(locationUri.startsWith("http")){
-					//open a new browser tab
-					Executions.getCurrent().sendRedirect(locationUri);
-				}else{
-					//use iterable to find the first include only
-					Include include = (Include)Selectors.iterable(eastSideBarTabbox.getPage(), "#mainInclude").iterator().next();
-					include.setSrc(locationUri);
-					Sessions.getCurrent().setAttribute("CURRENT_PAGE", name);
-					
-					//advance bookmark control, 
-					//bookmark with a prefix
-					if(name!=null){
-
-						getPage().getDesktop().setBookmark(Context.BOOKMARK_SEPARATOR + name);
-					}
-				}
-			}
-		};		
-		tb.addEventListener(Events.ON_CLICK, onActionListener);
-
-		return tb;
-	}
-	
 	private Listitem constructListItem(final String name,String label, String imageSrc, final String locationUri) {
 		
 		//construct component and hierarchy
@@ -133,6 +93,7 @@ public class EastSidebarAjaxbasedController extends SelectorComposer<Component>{
 		
 		tb.setImage(imageSrc);
 		tb.setLabel(label);
+		tb.setStyle("padding: 2px; border-spacing: 0");
 
 		
 		//new and register listener for events

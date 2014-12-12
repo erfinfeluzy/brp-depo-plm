@@ -30,12 +30,20 @@
                           onClick="logout()"/>
                     </menupopup>
                 </menu>
+                
+                <menu label="Report">
+                    <menupopup>
+                        <menuitem label="MLO Daily Report" onClick="@command('mloDailyReport')" />
+                    </menupopup>
+                </menu>
+                
                 <menu label="Administrator">
                     <menupopup>
                         <menuitem label="Role Configuration" onClick="@command('roleConfiguration')" />
                         <menuitem label="Send Email" onClick="@command('sendEmail')" />
                     </menupopup>
                 </menu>
+                
                 <menu label="Help">
                     <menupopup>
                         <menuitem label="Issue tracker" target="_zkdemo" href="http://tracker.zkoss.org" image="/widgets/menu/drop-down_menu/img/bug.png" />
